@@ -47,7 +47,7 @@ func (s Session) Save(collection string, object data.Object, note string) *derp.
 
 	object.SetUpdated(note)
 
-	filter := s.objectIDFilter(object.ID())
+	filter := objectToFilter(object.ID())
 	update := bson.D{{Key: "$set", Value: object}}
 	opts := options.Update().SetUpsert(true)
 
@@ -62,7 +62,7 @@ func (s Session) Save(collection string, object data.Object, note string) *derp.
 func (s Session) Delete(collection string, object data.Object, note string) *derp.Error {
 
 	object.SetDeleted(note)
-	filter := s.objectIDFilter(object.ID())
+	filter := objectToFilter(object.ID())
 	update := bson.D{{Key: "$set", Value: object}}
 	opts := options.Update().SetUpsert(true)
 
@@ -76,7 +76,7 @@ func (s Session) Delete(collection string, object data.Object, note string) *der
 // Close cleans up any remaining connections that need to be removed.
 func (s Session) Close() {}
 
-func (s Session) objectIDFilter(ID string) bson.D {
+func objectToFilter(ID string) bson.D {
 
 	objectID, err := primitive.ObjectIDFromHex(ID)
 

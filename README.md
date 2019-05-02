@@ -9,11 +9,9 @@
 
 This library helps to make Presto as widely useful as possible, by providing a simple, common interface for Presto to use when connecting to your database.
 
-To work in this adapter, your domain/model objects must implement this simple "Object" interface:
+### The "Object" interface
 
 ```go
-
-
 // Object wraps all of the methods that a Domain Object must provide to Presto
 type Object interface {
 
@@ -33,6 +31,9 @@ type Object interface {
     SetDeleted(comment string)
 }
 ```
+
+To implement this quickly, just attach the data.Journal object to your domain objects, and most of your work is already done.
+
 
 ### How to use this common data interface in your code
 

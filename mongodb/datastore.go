@@ -8,20 +8,20 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type DB struct {
+type Datastore struct {
 	uri      string
 	database string
 }
 
-func NewDB(uri string, database string) DB {
+func NewDB(uri string, database string) Datastore {
 
-	return DB{
+	return Datastore{
 		uri:      uri,
 		database: database,
 	}
 }
 
-func (db DB) Session(ctx context.Context) data.DBSession {
+func (db Datastore) Session(ctx context.Context) data.Session {
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(db.uri))
 

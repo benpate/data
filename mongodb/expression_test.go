@@ -2,6 +2,7 @@ package mongodb
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
 
 	"github.com/benpate/criteria"
@@ -43,5 +44,26 @@ func TestExpression(t *testing.T) {
 	ops.Add(">=", criteria.OperatorGreaterOrEqual, 0)
 	ops.Add("OTHER", "OTHER", 0)
 
-	t.Fail()
+	assert.Equal(t, "=", ops[0].Name)
+	assert.Equal(t, "=", ops[0].Operator)
+
+	assert.Equal(t, "!=", ops[1].Name)
+	assert.Equal(t, "!=", ops[1].Operator)
+
+	assert.Equal(t, "<", ops[2].Name)
+	assert.Equal(t, "<", ops[2].Operator)
+
+	assert.Equal(t, "<=", ops[3].Name)
+	assert.Equal(t, "<=", ops[3].Operator)
+
+	assert.Equal(t, ">", ops[4].Name)
+	assert.Equal(t, ">", ops[4].Operator)
+
+	assert.Equal(t, ">=", ops[5].Name)
+	assert.Equal(t, ">=", ops[5].Operator)
+
+	assert.Equal(t, "OTHER", ops[6].Name)
+	assert.Equal(t, "=", ops[6].Operator)
+
+	fmt.Println(ops)
 }

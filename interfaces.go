@@ -6,18 +6,21 @@ import (
 	"github.com/benpate/derp"
 )
 
-type DB interface {
-	Session(context.Context) DBSession
+// Datastore is an abstract representation of a database and its connection information.
+type Datastore interface {
+	Session(context.Context) Session
 }
 
-type DBSession interface {
+// Session represents a single database session, that is opened to support a single transactional request, and then closed
+// when this transaction is complete
+type Session interface {
 	Load(collection string, filter Expression, target Object) *derp.Error
 	Save(collection string, object Object, note string) *derp.Error
 	Delete(collection string, object Object, note string) *derp.Error
 	Close()
 }
 
-// Object wraps all of the methods that a Domain Object must provide to Presto
+// Object interface defines all of the methods that a Domain Object must provide to Presto
 type Object interface {
 
 	// ID returns the primary key of the object

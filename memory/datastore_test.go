@@ -2,7 +2,6 @@ package memory
 
 import (
 	"context"
-	"strings"
 	"testing"
 	"time"
 
@@ -213,73 +212,4 @@ func (factory *testFactory) Service(string) Service {
 	return &testPersonService{
 		session: factory.db.Session(ctx),
 	}
-}
-
-// DATABASE OBJECT
-type testDB map[string]testCollection
-
-type testCollection map[string]Object
-
-func (db *testDB) Session(ctx context.Context) *testDB {
-	return db
-}
-
-func (db *testDB) Load(collection string, filter criteria.Expression, target Object) *derp.Error {
-
-	if collection, ok := (*db)[collection]; ok {
-
-		for _, document := range collection {
-
-			if person, ok := document.(*testPerson); ok {
-
-				if filter.Match(*person) {
-
-					switch target := target.(type) {
-					case *testPerson:
-
-						*target = *person
-						return nil
-					}
-				}
-			}
-		}
-
-		return derp.New(404, "testDB.Load", "Document not found", filter)
-	}
-
-	return derp.New(404, "testDB.Load", "Collection does not exist", collection)
-}
-
-func (db *testDB) Save(collection string, object Object, comment string) *derp.Error {
-
-	if strings.HasPrefix(comment, "ERROR") {
-		return derp.New(500, "testDB.Save", "Synthetic Error", comment)
-	}
-
-	if _, ok := (*db)[collection]; !ok {
-		(*db)[collection] = testCollection{}
-	}
-
-	if object.IsNew() {
-		object.SetCreated(comment)
-	}
-	object.SetUpdated(comment)
-	(*db)[collection][object.ID()] = object
-
-	return nil
-}
-
-func (db *testDB) Delete(collection string, object Object, comment string) *derp.Error {
-
-	if strings.HasPrefix(comment, "ERROR") {
-		return derp.New(500, "testDB.Delete", "Synthetic Error", comment)
-	}
-
-	if _, ok := (*db)[collection]; !ok {
-		(*db)[collection] = testCollection{}
-	}
-
-	delete((*db)[collection], object.ID())
-
-	return nil
 }
