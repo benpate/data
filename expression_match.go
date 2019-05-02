@@ -12,11 +12,19 @@ func (exp Expression) Match(object interface{}) bool {
 
 	value := reflect.ValueOf(object)
 
+	if value.Kind() == reflect.Ptr {
+		value = reflect.Indirect(value)
+	}
+
 	for _, predicate := range exp {
 
 		field := value.FieldByNameFunc(func(name string) bool {
 			return strings.ToUpper(name) == strings.ToUpper(predicate.Name)
 		})
+
+		if field.IsValid() == false {
+			return false
+		}
 
 		comparison, ok := compareOK(field.Interface(), predicate.Value)
 

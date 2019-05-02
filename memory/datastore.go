@@ -4,7 +4,6 @@ import (
 	"context"
 	"strings"
 
-	"github.com/benpate/criteria"
 	"github.com/benpate/data"
 	"github.com/benpate/derp"
 )
@@ -18,23 +17,14 @@ func (db *Datastore) Session(ctx context.Context) *Datastore {
 	return db
 }
 
-func (db *Datastore) Load(collection string, filter criteria.Expression, target data.Object) *derp.Error {
+func (db *Datastore) Load(collection string, filter data.Expression, target data.Object) *derp.Error {
 
 	if collection, ok := (*db)[collection]; ok {
 
 		for _, document := range collection {
 
-			if person, ok := document.(*testPerson); ok {
-
-				if filter.Match(*person) {
-
-					switch target := target.(type) {
-					case *testPerson:
-
-						*target = *person
-						return nil
-					}
-				}
+			if filter.Match(document) {
+				return populateInterface(document, target)
 			}
 		}
 
