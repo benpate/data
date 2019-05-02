@@ -134,18 +134,37 @@ func TestMatch(t *testing.T) {
 
 	{
 		// Test INT64 less or equal
-		exp6 := Expression{{"createDate", "<=", 3}}
-		assert.Equal(t, true, exp6.Match(john))
-		assert.Equal(t, true, exp6.Match(sarah))
-		assert.Equal(t, true, exp6.Match(kyle))
+		exp := Expression{{"createDate", "<=", 3}}
+		assert.Equal(t, true, exp.Match(john))
+		assert.Equal(t, true, exp.Match(sarah))
+		assert.Equal(t, true, exp.Match(kyle))
+	}
+
+	{
+		// Test INT64 comparisons
+		assert.Equal(t, true, Expression{{"createDate", "=", int64(0)}}.Match(john))
+		assert.Equal(t, true, Expression{{"createDate", "!=", int64(1)}}.Match(john))
+		assert.Equal(t, true, Expression{{"createDate", "<", int64(1)}}.Match(john))
+		assert.Equal(t, true, Expression{{"createDate", "<=", int64(0)}}.Match(john))
+		assert.Equal(t, true, Expression{{"createDate", "<=", int64(1)}}.Match(john))
+		assert.Equal(t, true, Expression{{"createDate", ">", int64(-1)}}.Match(john))
+		assert.Equal(t, true, Expression{{"createDate", ">=", int64(-1)}}.Match(john))
+		assert.Equal(t, true, Expression{{"createDate", ">=", int64(0)}}.Match(john))
+
+		assert.Equal(t, false, Expression{{"createDate", "=", int64(1)}}.Match(john))
+		assert.Equal(t, false, Expression{{"createDate", "!=", int64(0)}}.Match(john))
+		assert.Equal(t, false, Expression{{"createDate", "<", int64(-1)}}.Match(john))
+		assert.Equal(t, false, Expression{{"createDate", "<=", int64(-1)}}.Match(john))
+		assert.Equal(t, false, Expression{{"createDate", ">", int64(1)}}.Match(john))
+		assert.Equal(t, false, Expression{{"createDate", ">=", int64(1)}}.Match(john))
 	}
 
 	{
 		// Test INT64 type mismatch
-		exp6 := Expression{{"createDate", "<=", "STRING"}}
-		assert.Equal(t, false, exp6.Match(john))
-		assert.Equal(t, false, exp6.Match(sarah))
-		assert.Equal(t, false, exp6.Match(kyle))
+		exp := Expression{{"createDate", "<=", "STRING"}}
+		assert.Equal(t, false, exp.Match(john))
+		assert.Equal(t, false, exp.Match(sarah))
+		assert.Equal(t, false, exp.Match(kyle))
 	}
 
 	// Test multiple fields
@@ -183,6 +202,27 @@ func TestMatch(t *testing.T) {
 		assert.Equal(t, false, exp1.Match(john))
 		assert.Equal(t, false, exp1.Match(sarah))
 		assert.Equal(t, false, exp1.Match(kyle))
+	}
+
+	{
+		// Test string comparisons
+		assert.Equal(t, true, Expression{{"name", "=", "John Connor"}}.Match(john))
+		assert.Equal(t, true, Expression{{"name", ">=", "John Connor"}}.Match(john))
+		assert.Equal(t, true, Expression{{"name", "<=", "John Connor"}}.Match(john))
+		assert.Equal(t, true, Expression{{"name", "!=", "A"}}.Match(john))
+		assert.Equal(t, true, Expression{{"name", "<", "Klaus"}}.Match(john))
+		assert.Equal(t, true, Expression{{"name", "<=", "Kaus"}}.Match(john))
+		assert.Equal(t, true, Expression{{"name", ">", "Ignacio"}}.Match(john))
+		assert.Equal(t, true, Expression{{"name", ">=", "Ignacio"}}.Match(john))
+
+		assert.Equal(t, false, Expression{{"name", "=", "Sarah Connor"}}.Match(john))
+		assert.Equal(t, false, Expression{{"name", "<", "John Connor"}}.Match(john))
+		assert.Equal(t, false, Expression{{"name", ">", "John Connor"}}.Match(john))
+		assert.Equal(t, false, Expression{{"name", ">=", "Klaus"}}.Match(john))
+		assert.Equal(t, false, Expression{{"name", "<=", "Ignacio"}}.Match(john))
+		assert.Equal(t, false, Expression{{"name", "!=", "John Connor"}}.Match(john))
+		assert.Equal(t, false, Expression{{"name", "<", "Ignacio"}}.Match(john))
+		assert.Equal(t, false, Expression{{"name", ">", "Klaus"}}.Match(john))
 	}
 
 	{
