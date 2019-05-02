@@ -13,7 +13,7 @@ type Datastore struct {
 	database string
 }
 
-func NewDB(uri string, database string) Datastore {
+func New(uri string, database string) Datastore {
 
 	return Datastore{
 		uri:      uri,

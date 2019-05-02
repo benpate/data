@@ -7,7 +7,7 @@
 
 ## Swappable Database Adapters for Go
 
-This library helps to make Presto as widely useful as possible, by providing a simple, common interface for Presto to use when connecting to your database.
+This library helps to make simple database calls as easily as possible, by providing a simple, common interface that we can implement for every database we need.  The goal of this package is to provide simple [CRUD operations](https://en.wikipedia.org/wiki/Create%2C_read%2C_update_and_delete) only, so each database will support many advanced features that are not available through this library.
 
 ### The "Object" interface
 
@@ -34,18 +34,26 @@ type Object interface {
 
 To implement this quickly, just attach the data.Journal object to your domain objects, and most of your work is already done.
 
-
-### How to use this common data interface in your code
+### Using datasources
 
 ```go
 
+// Configure your database
+ds := mongodb.New(uri, dbname)
+
+// Create a new session, one per server request.
+session := ds.Session()
+defer session.Close()
+
 // Load from database into a person object
-err := db.Load("Person", criteria, &person)
+err := session.Load("Person", criteria, &person)
 
-// Insert/Update a person object inthe database
-err := db.Save("Person", person)
+// Insert/Update a person object in the database
+err := session.Save("Person", person)
 
-err := db.Delete("Person", person)
+// Delete a person from the database
+err := session.Delete("Person", person)
+
 ```
 
 ### data.mongodb
@@ -56,12 +64,9 @@ This adapter implements the data interface for MongoDB.  It uses the standard Mo
 
 This adapter implements the data interface for an in-memory datastore.  It is the world's worst database, and should only be used for creating unit tests.  If you use this "database" in production (hell, or even as a proof-of-concept demo) then you deserve the merciless mockery that fate holds for you.
 
-## Minimalist Expression Builder
+## Minimal Expression Builder
 
-This is a tiny library for building expressions, primarily used for making database filters.  Every database has its own query language, so this library provides in intermediate format that should be easy to convert into whatever specific language you need to use.
-
-It was originally a part of [presto](http://github.com/benpate/presto), but was moved into its own package to reduce the number of dependencies in applications that use it.
-
+Every database has its own query language, so this library provides in intermediate format that should be easy to convert into whatever specific language you need to use.
 
 ```go
 // build a data directly

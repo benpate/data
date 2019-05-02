@@ -1,10 +1,7 @@
 github.com/benpate/criteria v0.2.0 h1:67OORWKvzcz4FQeLNSEa993NjJ06f8L53Yr7piB8IzI=
 github.com/benpate/criteria v0.2.0/go.mod h1:kGxuHZ9UsIpfuPbj/gSEYzCxJDVQLNWWgQ6KtWRqjM0=
-github.com/benpate/derp v0.9.1/go.mod h1:uk1EoSDvBEkBIOw4J/qeLga2kUCvKukIFFk3YE7Zjtk=
 github.com/benpate/derp v0.9.2 h1:cq0KsxdF3CrWAZ4bttJvoIOyJx3t9jczkxu3ifgOyEg=
 github.com/benpate/derp v0.9.2/go.mod h1:uk1EoSDvBEkBIOw4J/qeLga2kUCvKukIFFk3YE7Zjtk=
-github.com/benpate/remote v0.5.4 h1:r8xn4A/cl12Hrxt/xtKfkTvGzWYL228hlDZWroqWIrI=
-github.com/benpate/remote v0.5.4/go.mod h1:7ogQjmTUDV34AFAGHV1twfr8Xvzx3/GWapmF8/jz+T0=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/go-stack/stack v1.8.0 h1:5SgMzNM5HxrEjV0ww2lTmX6E2Izsfxas4+YHWRs3Lsk=

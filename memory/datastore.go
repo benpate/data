@@ -13,6 +13,10 @@ type Datastore map[string]Collection
 
 type Collection map[string]data.Object
 
+func New() *Datastore {
+	return &Datastore{}
+}
+
 func (db *Datastore) Session(ctx context.Context) *Datastore {
 	return db
 }

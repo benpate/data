@@ -10,7 +10,7 @@ import (
 
 func TestDatastore(t *testing.T) {
 
-	ds := Datastore{}
+	ds := New()
 
 	session := ds.Session(context.TODO())
 
