@@ -18,11 +18,11 @@ type Session struct {
 }
 
 // Load retrieves a single object from the database
-func (s Session) Load(collection string, filter data.Expression, target data.Object) *derp.Error {
+func (s Session) Load(collection string, criteria data.Expression, target data.Object) *derp.Error {
 
-	filterBSON := Expression2BSON(filter)
+	criteriaBSON := Expression2BSON(criteria)
 
-	if err := s.client.Database(s.database).Collection(collection).FindOne(s.context, filterBSON).Decode(target); err != nil {
+	if err := s.client.Database(s.database).Collection(collection).FindOne(s.context, criteriaBSON).Decode(target); err != nil {
 
 		var errorCode int
 
@@ -32,7 +32,7 @@ func (s Session) Load(collection string, filter data.Expression, target data.Obj
 			errorCode = derp.CodeInternalError
 		}
 
-		return derp.New(errorCode, "mongodb.Load", "Error loading object", err.Error(), collection, filter, target)
+		return derp.New(errorCode, "mongodb.Load", "Error loading object", err.Error(), collection, criteria, criteriaBSON, target)
 	}
 
 	return nil
