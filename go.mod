@@ -3,7 +3,6 @@ module github.com/benpate/data
 go 1.12
 
 require (
-	github.com/benpate/criteria v0.2.0
 	github.com/benpate/derp v0.9.2
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
