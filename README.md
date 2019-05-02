@@ -21,13 +21,13 @@ type Object interface {
     // IsNew returns TRUE if the object has not yet been saved to the database
     IsNew() bool
 
-    // SetCreated stamps the CreateDate and UpdateDate of the object, and makes a note
+    // SetCreated stamps the CreateDate and UpdateDate of the object, and adds a note to the Journal.
     SetCreated(comment string)
 
-    // SetUpdated stamps the UpdateDate of the object, and makes a note
+    // SetUpdated stamps the UpdateDate of the object, and adds a note to the Journal.
     SetUpdated(comment string)
 
-    // SetDeleted marks the object virtually "deleted", and makes a note
+    // SetDeleted marks the object virtually "deleted", and adds a note to the Journal.
     SetDeleted(comment string)
 }
 ```
