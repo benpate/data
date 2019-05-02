@@ -47,15 +47,15 @@ err := db.Save("Person", person)
 err := db.Delete("Person", person)
 ```
 
-### mongodb
+### data.mongodb
 
 This adapter implements the data interface for MongoDB.  It uses the standard MongoDB driver.
 
-### memory
+### data.memory
 
 This adapter implements the data interface for an in-memory datastore.  It is the world's worst database, and should only be used for creating unit tests.  If you use this "database" in production (hell, or even as a proof-of-concept demo) then you deserve the merciless mockery that fate holds for you.
 
-## Minimalist expression builder for Go
+## Minimalist Expression Builder
 
 This is a tiny library for building expressions, primarily used for making database filters.  Every database has its own query language, so this library provides in intermediate format that should be easy to convert into whatever specific language you need to use.
 
