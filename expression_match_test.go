@@ -140,7 +140,6 @@ func TestMatch(t *testing.T) {
 		assert.Equal(t, true, exp6.Match(kyle))
 	}
 
-
 	{
 		// Test INT64 type mismatch
 		exp6 := Expression{{"createDate", "<=", "STRING"}}
@@ -184,5 +183,41 @@ func TestMatch(t *testing.T) {
 		assert.Equal(t, false, exp1.Match(john))
 		assert.Equal(t, false, exp1.Match(sarah))
 		assert.Equal(t, false, exp1.Match(kyle))
+	}
+
+	{
+		// Test INT / INT64 type mismatch
+		assert.Equal(t, true, Expression{{"id", "=", int64(42)}}.Match(john))
+		assert.Equal(t, true, Expression{{"createDate", "=", 0}}.Match(john))
+		assert.Equal(t, false, Expression{{"id", "=", int64(43)}}.Match(john))
+		assert.Equal(t, false, Expression{{"createDate", "=", 1}}.Match(john))
+
+		assert.Equal(t, true, Expression{{"id", "<", int64(43)}}.Match(john))
+		assert.Equal(t, true, Expression{{"createDate", "<", 1}}.Match(john))
+		assert.Equal(t, false, Expression{{"id", "<", int64(40)}}.Match(john))
+		assert.Equal(t, false, Expression{{"createDate", "<", 0}}.Match(john))
+
+		assert.Equal(t, true, Expression{{"id", "<=", int64(42)}}.Match(john))
+		assert.Equal(t, true, Expression{{"createDate", "<=", 0}}.Match(john))
+		assert.Equal(t, false, Expression{{"id", "<=", int64(40)}}.Match(john))
+		assert.Equal(t, false, Expression{{"createDate", "<=", -1}}.Match(john))
+		assert.Equal(t, true, Expression{{"id", "<=", int64(43)}}.Match(john))
+		assert.Equal(t, true, Expression{{"createDate", "<=", 1}}.Match(john))
+		assert.Equal(t, false, Expression{{"id", "<=", int64(40)}}.Match(john))
+		assert.Equal(t, false, Expression{{"createDate", "<=", -1}}.Match(john))
+
+		assert.Equal(t, true, Expression{{"id", ">", int64(40)}}.Match(john))
+		assert.Equal(t, true, Expression{{"createDate", ">", -1}}.Match(john))
+		assert.Equal(t, false, Expression{{"id", ">", int64(44)}}.Match(john))
+		assert.Equal(t, false, Expression{{"createDate", ">", 1}}.Match(john))
+
+		assert.Equal(t, true, Expression{{"id", ">=", int64(42)}}.Match(john))
+		assert.Equal(t, true, Expression{{"createDate", ">=", 0}}.Match(john))
+		assert.Equal(t, false, Expression{{"id", ">=", int64(43)}}.Match(john))
+		assert.Equal(t, false, Expression{{"createDate", ">=", 1}}.Match(john))
+		assert.Equal(t, true, Expression{{"id", ">=", int64(42)}}.Match(john))
+		assert.Equal(t, true, Expression{{"createDate", ">=", 0}}.Match(john))
+		assert.Equal(t, false, Expression{{"id", ">=", int64(44)}}.Match(john))
+		assert.Equal(t, false, Expression{{"createDate", ">=", 1}}.Match(john))
 	}
 }
