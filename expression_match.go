@@ -86,6 +86,17 @@ func compareOK(value1 interface{}, value2 interface{}) (int, bool) {
 			}
 		}
 
+		if v2, ok := value2.(int64); ok {
+
+			if int64(v1) < v2 {
+				return -1, true
+			} else if int64(v1) == v2 {
+				return 0, true
+			} else {
+				return 1, true
+			}
+		}
+
 	case int64:
 
 		if v2, ok := value2.(int64); ok {
@@ -99,22 +110,19 @@ func compareOK(value1 interface{}, value2 interface{}) (int, bool) {
 			}
 		}
 
-	case string:
-
-		if v2, ok := value2.(string); ok {
-
-			if v1 < v2 {
+		if v2, ok := value2.(int); ok {
+			if v1 < int64(v2) {
 				return -1, true
-			} else if v1 == v2 {
+			} else if v1 == int64(v2) {
 				return 0, true
 			} else {
 				return 1, true
 			}
 		}
 
-	case byte:
+	case string:
 
-		if v2, ok := value2.(byte); ok {
+		if v2, ok := value2.(string); ok {
 
 			if v1 < v2 {
 				return -1, true
