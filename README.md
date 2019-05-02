@@ -30,7 +30,7 @@ type Object interface {
     SetUpdated(comment string)
 
     // SetDeleted marks the object virtually "deleted", and makes a note
-	SetDeleted(comment string)
+    SetDeleted(comment string)
 }
 ```
 
