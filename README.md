@@ -64,7 +64,6 @@ It was originally a part of [presto](http://github.com/benpate/presto), but was 
 
 
 ```go
-
 // build a data directly
 c := data.Criteria{{"id", "=", 42}, {"deleteDate", "=", 0}}
 
