@@ -2,7 +2,6 @@ package mongodb
 
 import (
 	"encoding/json"
-	"fmt"
 	"testing"
 
 	"github.com/benpate/data"
@@ -25,13 +24,13 @@ func TestExpression(t *testing.T) {
 
 	// Test combining operators into a single bson.M
 	ct := data.Expression{{"id", data.OperatorEqual, 42}}
-	assert.Equal(t, toJSON(Expression2BSON(ct)), `{"id":{"Key":"$eq","Value":42}}`)
+	assert.Equal(t, toJSON(ExpressionToBSON(ct)), `{"id":{"$eq":42},"journal.deleteDate":0}`)
 
 	ct.Add("createDate", data.OperatorGreaterThan, 10)
-	assert.Equal(t, toJSON(Expression2BSON(ct)), `{"createDate":{"Key":"$gt","Value":10},"id":{"Key":"$eq","Value":42}}`)
+	assert.Equal(t, toJSON(ExpressionToBSON(ct)), `{"createDate":{"$gt":10},"id":{"$eq":42},"journal.deleteDate":0}`)
 
 	ct.Add("createDate", data.OperatorLessThan, 20)
-	assert.Equal(t, toJSON(Expression2BSON(ct)), `{"createDate":[{"Key":"$gt","Value":10},{"Key":"$lt","Value":20}],"id":{"Key":"$eq","Value":42}}`)
+	assert.Equal(t, toJSON(ExpressionToBSON(ct)), `{"createDate":[{"$gt":10},{"$lt":20}],"id":{"$eq":42},"journal.deleteDate":0}`)
 
 	// Test that all operators are translated correctly.
 	ops := data.Expression{}
@@ -63,6 +62,4 @@ func TestExpression(t *testing.T) {
 
 	assert.Equal(t, "OTHER", ops[6].Name)
 	assert.Equal(t, "=", ops[6].Operator)
-
-	fmt.Println(ops)
 }
