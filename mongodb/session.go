@@ -5,7 +5,6 @@ import (
 
 	"github.com/benpate/data"
 	"github.com/benpate/derp"
-	"github.com/davecgh/go-spew/spew"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -58,7 +57,17 @@ func (s Session) Save(collection string, object data.Object, note string) *derp.
 
 	// Fall through to here means UPDATE object
 
-	filter := objectToFilter(object)
+	objectID, err := primitive.ObjectIDFromHex(object.ID())
+
+	if err != nil {
+		return derp.New(derp.CodeInternalError, "mongodb.Save", "Error generating objectID", err, object)
+	}
+
+	filter := bson.M{
+		"_id":                objectID,
+		"journal.deleteDate": 0,
+	}
+
 	update := bson.M{"$set": object}
 
 	if _, err := s.client.Database(s.database).Collection(collection).UpdateOne(s.context, filter, update); err != nil {
@@ -72,7 +81,7 @@ func (s Session) Save(collection string, object data.Object, note string) *derp.
 func (s Session) Delete(collection string, object data.Object, note string) *derp.Error {
 
 	if object.IsNew() {
-		return nil
+		return derp.New(derp.CodeBadRequestError, "mongo.Delete", "Cannot delete a new object", collection, object, note)
 	}
 
 	// Use virtual delete to mark this object as deleted.
@@ -82,20 +91,3 @@ func (s Session) Delete(collection string, object data.Object, note string) *der
 
 // Close cleans up any remaining connections that need to be removed.
 func (s Session) Close() {}
-
-func objectToFilter(object data.Object) bson.M {
-
-	objectID, err := primitive.ObjectIDFromHex(object.ID())
-
-	if err != nil {
-		objectID = primitive.NewObjectID()
-	}
-
-	result := bson.M{
-		"_id":                objectID,
-		"journal.deleteDate": 0,
-	}
-
-	spew.Dump(result)
-	return result
-}
