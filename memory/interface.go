@@ -2,11 +2,12 @@ package memory
 
 import (
 	"reflect"
+
 	"github.com/benpate/derp"
 )
 
 func populateInterface(source interface{}, target interface{}) *derp.Error {
-	
+
 	sourceValue := reflect.ValueOf(source)
 
 	if sourceValue.Kind() == reflect.Ptr {
@@ -14,10 +15,10 @@ func populateInterface(source interface{}, target interface{}) *derp.Error {
 	}
 
 	sourceType := sourceValue.Type()
-	
+
 	targetValue := reflect.Indirect(reflect.ValueOf(target))
 
-	for index := 0 ; index < sourceType.NumField() ; index=index+1 {
+	for index := 0; index < sourceType.NumField(); index = index + 1 {
 
 		sourceField := sourceType.FieldByIndex([]int{index})
 
@@ -28,5 +29,3 @@ func populateInterface(source interface{}, target interface{}) *derp.Error {
 
 	return nil
 }
-
-

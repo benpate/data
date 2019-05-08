@@ -8,19 +8,23 @@ import (
 	"github.com/benpate/derp"
 )
 
-// DATABASE OBJECT
+// Datastore is a mock database
 type Datastore map[string]Collection
 
+// Collection is a mock table
 type Collection map[string]data.Object
 
+// New returns a fully initialized Database object
 func New() *Datastore {
 	return &Datastore{}
 }
 
+// Session returns a session that can be used as a mock database.
 func (db *Datastore) Session(ctx context.Context) *Datastore {
 	return db
 }
 
+// Load retrieves a single record from the mock collection.
 func (db *Datastore) Load(collection string, filter data.Expression, target data.Object) *derp.Error {
 
 	if collection, ok := (*db)[collection]; ok {
@@ -38,6 +42,7 @@ func (db *Datastore) Load(collection string, filter data.Expression, target data
 	return derp.New(404, "Datastore.Load", "Collection does not exist", collection)
 }
 
+// Save adds/inserts a new record into the mock database
 func (db *Datastore) Save(collection string, object data.Object, comment string) *derp.Error {
 
 	if strings.HasPrefix(comment, "ERROR") {
@@ -57,6 +62,7 @@ func (db *Datastore) Save(collection string, object data.Object, comment string)
 	return nil
 }
 
+// Delete PERMANENTLY removes a record from the mock database.
 func (db *Datastore) Delete(collection string, object data.Object, comment string) *derp.Error {
 
 	if strings.HasPrefix(comment, "ERROR") {
@@ -71,3 +77,6 @@ func (db *Datastore) Delete(collection string, object data.Object, comment strin
 
 	return nil
 }
+
+// Close cleans up any remaining data created by the mock session.
+func (db *Datastore) Close() {}

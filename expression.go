@@ -22,7 +22,7 @@ func (exp *Expression) Add(name string, operator string, value interface{}) *Exp
 	return exp
 }
 
-// Combine merges together the predicates of all provided criteria expressions, into a single criteria expression.
+// Join merges together the predicates of all provided criteria expressions, into a single criteria expression.
 func (exp Expression) Join(criteriaToCombine ...Expression) Expression {
 
 	for _, criteria := range criteriaToCombine {
