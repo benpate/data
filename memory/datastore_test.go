@@ -1,10 +1,12 @@
 package memory
 
 import (
+	"context"
 	"testing"
 	"time"
-	"context"
+
 	"github.com/benpate/data"
+	"github.com/benpate/derp"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,8 +18,8 @@ func TestDatastore(t *testing.T) {
 
 	john := &testPerson{
 		PersonID: "A",
-		Name: "John Connor",
-		Email: "john@connor.com",
+		Name:     "John Connor",
+		Email:    "john@connor.com",
 	}
 
 	// CREATE
@@ -57,10 +59,35 @@ func TestDatastore(t *testing.T) {
 	{
 		person := testPerson{}
 		criteria := data.Expression{{"missingField", "=", "A"}}
-		err := session.Load("Person", criteria, &person); 
+		err := session.Load("Person", criteria, &person)
 		assert.NotNil(t, err)
 	}
+}
 
+func TestErrors(t *testing.T) {
+
+	ds := New()
+
+	session := ds.Session(context.TODO())
+
+	person := &testPerson{}
+
+	{
+		err := session.Load("MissingCollection", data.Expression{}, person)
+		assert.NotNil(t, err)
+		assert.Equal(t, derp.CodeNotFoundError, err.Code)
+		assert.Equal(t, "Datastore.Load", err.Location)
+		assert.Equal(t, "Collection does not exist", err.Message)
+		assert.Equal(t, []interface{}{"MissingCollection"}, err.Details)
+	}
+
+	{
+		err := session.Save("Person", person, "ERROR: Testing error codes")
+		assert.NotNil(t, err)
+		assert.Equal(t, derp.CodeInternalError, err.Code)
+		assert.Equal(t, "Datastore.Save", err.Location)
+		assert.Equal(t, "Synthetic Error", err.Message)
+	}
 }
 
 // MODEL OBJECT
@@ -69,8 +96,8 @@ type testPerson struct {
 	PersonID   string
 	Name       string
 	Email      string
-	CreateDate int64 
-	UpdateDate int64 
+	CreateDate int64
+	UpdateDate int64
 	Comment    string
 }
 

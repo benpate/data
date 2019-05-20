@@ -15,12 +15,12 @@ type Datastore map[string]Collection
 type Collection map[string]data.Object
 
 // New returns a fully initialized Database object
-func New() *Datastore {
+func New() data.Datastore {
 	return &Datastore{}
 }
 
 // Session returns a session that can be used as a mock database.
-func (db *Datastore) Session(ctx context.Context) *Datastore {
+func (db *Datastore) Session(ctx context.Context) data.Session {
 	return db
 }
 
