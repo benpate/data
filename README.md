@@ -82,12 +82,12 @@ c.Add("deleteDate", data.OperatorEqual, 0)
 finalResult = data.combined(data1, data2, data3)
 
 // Constants define standard expected operators
-data.OperatorEqual    = "="
-data.OperatorNotEqual = "!="
-data.LessThan         = "<"
-data.LessOrEqual      = "<="
-data.GreaterThan      = ">"
-data.GreaterOrEqual   = ">="
+data.OperatorEqual          = "="
+data.OperatorNotEqual       = "!="
+data.OperatorLessThan       = "<"
+data.OperatorLessOrEqual    = "<="
+data.OperatorGreaterThan    = ">"
+data.OperatorGreaterOrEqual = ">="
 ```
 
 ## Pull Requests Welcome
