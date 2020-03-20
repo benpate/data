@@ -19,6 +19,6 @@ func New(config map[string]string) (data.Datastore, *derp.Error) {
 		return mongodb.New(config["uri"], config["database"]), nil
 
 	default:
-		return nil, derp.New(404, "data.Router.New", "Unrecognized database configuration", config)
+		return nil, derp.New(500, "data.Router.New", "Unrecognized database configuration", config)
 	}
 }
