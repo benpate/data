@@ -12,6 +12,11 @@ type Expression []struct {
 	Value    interface{} // The value that the field is being compared to
 }
 
+// NewExpression returns a fully populated Expression
+func NewExpression() *Expression {
+	return &Expression{}
+}
+
 // Add appends a new predicate to an existing criteria expression.
 func (exp *Expression) Add(name string, operator string, value interface{}) *Expression {
 
