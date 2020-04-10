@@ -64,6 +64,33 @@ func TestDatastore(t *testing.T) {
 	}
 }
 
+func TestList(t *testing.T) {
+
+	ds := New()
+
+	session := ds.Session(context.TODO())
+
+	session.Save("Person", &testPerson{PersonID: "A", Name: "Sarah Connor", Email: "sarah@sky.net"}, "Creating Record")
+	session.Save("Person", &testPerson{PersonID: "B", Name: "John Connor", Email: "john@connor.com"}, "Creating Record")
+	session.Save("Person", &testPerson{PersonID: "C", Name: "Kyle Reese", Email: "kyle@resistance.mil"}, "Creating Record")
+
+	criteria := data.Expression{}
+	criteria.Add("PersonID", "=", "A")
+
+	it, err := session.List("Person", criteria, []string{})
+
+	assert.Nil(t, err)
+
+	person := testPerson{}
+
+	assert.True(t, it.Next(&person))
+	assert.Equal(t, "A", person.PersonID)
+	assert.Equal(t, "Sarah Connor", person.Name)
+	assert.Equal(t, "sarah@sky.net", person.Email)
+
+	assert.False(t, it.Next(&person))
+}
+
 func TestErrors(t *testing.T) {
 
 	ds := New()

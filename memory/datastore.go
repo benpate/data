@@ -24,6 +24,26 @@ func (db *Datastore) Session(ctx context.Context) data.Session {
 	return db
 }
 
+// List retrieves a group of records as an Iterator.
+func (db *Datastore) List(collection string, filter data.Expression, sort []string) (data.Iterator, *derp.Error) {
+
+	result := []data.Object{}
+
+	if collection, ok := (*db)[collection]; ok {
+
+		for _, document := range collection {
+
+			if filter.Match((document)) {
+				result = append(result, document)
+			}
+		}
+
+		return NewIterator(result), nil
+	}
+
+	return NewIterator(result), derp.New(404, "Datastore.Load", "Collection does not exist", collection)
+}
+
 // Load retrieves a single record from the mock collection.
 func (db *Datastore) Load(collection string, filter data.Expression, target data.Object) *derp.Error {
 

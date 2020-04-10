@@ -18,6 +18,22 @@ type Session struct {
 	database string
 }
 
+// List retrieves a group of objects from the database
+func (s Session) List(collection string, criteria data.Expression, sort []string) (data.Iterator, *derp.Error) {
+
+	criteriaBSON := ExpressionToBSON(criteria)
+
+	cursor, err := s.client.Database(s.database).Collection(collection).Find(s.context, criteriaBSON)
+
+	if err != nil {
+		return NewIterator(s.context, cursor), derp.New(derp.CodeInternalError, "mongodb.List", "Error Listing Objects", err.Error(), collection, criteria, criteriaBSON, sort)
+	}
+
+	iterator := NewIterator(s.context, cursor)
+
+	return iterator, nil
+}
+
 // Load retrieves a single object from the database
 func (s Session) Load(collection string, criteria data.Expression, target data.Object) *derp.Error {
 
