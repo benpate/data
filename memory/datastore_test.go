@@ -77,7 +77,7 @@ func TestList(t *testing.T) {
 	criteria := data.Expression{}
 	criteria.Add("PersonID", "=", "A")
 
-	it, err := session.List("Person", criteria, []string{})
+	it, err := session.List("Person", criteria)
 
 	assert.Nil(t, err)
 

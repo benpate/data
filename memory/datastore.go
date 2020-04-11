@@ -25,7 +25,7 @@ func (db *Datastore) Session(ctx context.Context) data.Session {
 }
 
 // List retrieves a group of records as an Iterator.
-func (db *Datastore) List(collection string, filter data.Expression, sort []string) (data.Iterator, *derp.Error) {
+func (db *Datastore) List(collection string, filter data.Expression, options ...data.Option) (data.Iterator, *derp.Error) {
 
 	result := []data.Object{}
 
