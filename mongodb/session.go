@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/benpate/data"
+	"github.com/benpate/data/option"
 	"github.com/benpate/derp"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -19,7 +20,7 @@ type Session struct {
 }
 
 // List retrieves a group of objects from the database
-func (s Session) List(collection string, criteria data.Expression, options ...data.Option) (data.Iterator, *derp.Error) {
+func (s Session) List(collection string, criteria data.Expression, options ...option.Option) (data.Iterator, *derp.Error) {
 
 	criteriaBSON := ExpressionToBSON(criteria)
 
