@@ -45,6 +45,10 @@ ds := mongodb.New(uri, dbname)
 session := ds.Session()
 defer session.Close()
 
+// Returns an iterator that will loop through all records that match the provided criteria.
+it, err := session.List("Person", criteria, options...)
+
+
 // Load from database into a person object
 err := session.Load("Person", criteria, &person)
 
@@ -60,26 +64,45 @@ err := session.Delete("Person", person)
 
 This adapter implements the data interface for MongoDB.  It uses the standard MongoDB driver.
 
-### data.memory
+### data.mock
 
 This adapter implements the data interface for an in-memory datastore.  It is the world's worst database, and should only be used for creating unit tests.  If you use this "database" in production (hell, or even as a proof-of-concept demo) then you deserve the merciless mockery that fate holds for you.
 
-## Minimal Expression Builder
+## Retrieving Record Sets
+
+The "data" library includes an "iterator" interface that works to retrieve large sets of data from the datasource efficiently.
+
+```go
+
+// Create an object for the iterator to populate
+person := Person{}
+
+// Create the iterator.  Requires a collection name, criteria expression (below), and options (also below, such as sorting and pagination)
+it := session.List(CollectionName, CriteriaExpression, Options)
+
+for it.Next(&person) {
+
+    // person.Name...
+    // person.Email...
+}
+```
+
+## Expressions Builder
 
 Every database has its own query language, so this library provides in intermediate format that should be easy to convert into whatever specific language you need to use.
 
 ```go
-// build a data directly
-c := data.Criteria{{"id", "=", 42}, {"deleteDate", "=", 0}}
-
 // build a data incrementally
-c := data.Criteria{}
+c := data.NewExpression()
 
 c.Add("id", data.OperatorEqual, 42)
 c.Add("deleteDate", data.OperatorEqual, 0)
 
+// build a data directly
+critria := data.Expression{{"id", "=", 42}, {"deleteDate", "=", 0}}
+
 // combine data expressions into a single value
-finalResult = data.combined(data1, data2, data3)
+finalResult = criteria.Combine(data1, data2, data3)
 
 // Constants define standard expected operators
 data.OperatorEqual          = "="
@@ -89,6 +112,22 @@ data.OperatorLessOrEqual    = "<="
 data.OperatorGreaterThan    = ">"
 data.OperatorGreaterOrEqual = ">="
 ```
+
+### Query Options
+
+There's a package for managing optional query arguments, such as sorting and pagination.  These options just encapsulate data.  It is the responsibilty of 
+each database adapter to implement each of these in its own query engine.
+
+```go
+
+// query criteria: all records not yet deleted
+criteria := NewExpression().Add("deleteDate", "=", 0)
+
+// get a new iterator.  Sort results by first name.  Return only the first 100 rows.
+it := session.List("Person", Expression, options.SortAsc("name"), options.MaxRows(100))
+
+```
+
 
 ## Pull Requests Welcome
 
