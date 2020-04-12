@@ -32,7 +32,7 @@ type Object interface {
 }
 ```
 
-To implement this quickly, just attach the data.Journal object to your domain objects, and most of your work is already done.
+To implement this quickly, just attach the journal.Journal object to your domain objects, and most of your work is already done.
 
 ### Using datasources
 
