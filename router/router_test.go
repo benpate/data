@@ -3,21 +3,21 @@ package router
 import (
 	"testing"
 
-	"github.com/benpate/data/memory"
+	"github.com/benpate/data/mock"
 	"github.com/benpate/data/mongodb"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestMemory(t *testing.T) {
+func TestMock(t *testing.T) {
 
 	config := map[string]string{
-		"type": "memory",
+		"type": "mock",
 	}
 
 	result, err := New(config)
 
 	assert.Nil(t, err)
-	assert.IsType(t, &memory.Datastore{}, result)
+	assert.IsType(t, &mock.Datastore{}, result)
 }
 
 func TestMongoDB(t *testing.T) {

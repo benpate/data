@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/benpate/data"
-	"github.com/benpate/data/memory"
+	"github.com/benpate/data/mock"
 	"github.com/benpate/data/mongodb"
 	"github.com/benpate/derp"
 )
@@ -12,8 +12,8 @@ func New(config map[string]string) (data.Datastore, *derp.Error) {
 
 	switch config["type"] {
 
-	case "memory":
-		return memory.New(), nil
+	case "mock":
+		return mock.New(), nil
 
 	case "mongodb":
 		return mongodb.New(config["uri"], config["database"]), nil
