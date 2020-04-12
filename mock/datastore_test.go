@@ -1,11 +1,11 @@
-package memory
+package mock
 
 import (
 	"context"
 	"testing"
-	"time"
 
 	"github.com/benpate/data"
+	"github.com/benpate/data/journal"
 	"github.com/benpate/derp"
 	"github.com/stretchr/testify/assert"
 )
@@ -52,7 +52,7 @@ func TestDatastore(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, "Sarah Connor", person2.Name)
 		assert.Equal(t, "sarah@sky.net", person2.Email)
-		assert.Equal(t, "Comment Here", person2.Comment)
+		assert.Equal(t, "Comment Here", person2.Journal.Note)
 	}
 
 	// "NOT FOUND"
@@ -120,31 +120,12 @@ func TestErrors(t *testing.T) {
 // MODEL OBJECT
 
 type testPerson struct {
-	PersonID   string
-	Name       string
-	Email      string
-	CreateDate int64
-	UpdateDate int64
-	Comment    string
+	PersonID string
+	Name     string
+	Email    string
+	journal.Journal
 }
 
-func (person *testPerson) ID() string {
+func (person testPerson) ID() string {
 	return person.PersonID
-}
-
-func (person *testPerson) IsNew() bool {
-	return person.CreateDate == 0
-}
-
-func (person *testPerson) SetCreated(comment string) {
-	person.CreateDate = time.Now().Unix()
-	person.Comment = comment
-}
-
-func (person *testPerson) SetUpdated(comment string) {
-	person.UpdateDate = time.Now().Unix()
-	person.Comment = comment
-}
-
-func (person *testPerson) SetDeleted(comment string) {
 }

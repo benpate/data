@@ -1,10 +1,12 @@
-package memory
+package mock
 
 import (
 	"context"
+	"sort"
 	"strings"
 
 	"github.com/benpate/data"
+	"github.com/benpate/data/option"
 	"github.com/benpate/derp"
 )
 
@@ -25,7 +27,7 @@ func (db *Datastore) Session(ctx context.Context) data.Session {
 }
 
 // List retrieves a group of records as an Iterator.
-func (db *Datastore) List(collection string, filter data.Expression, options ...data.Option) (data.Iterator, *derp.Error) {
+func (db *Datastore) List(collection string, filter data.Expression, options ...option.Option) (data.Iterator, *derp.Error) {
 
 	result := []data.Object{}
 
@@ -38,7 +40,12 @@ func (db *Datastore) List(collection string, filter data.Expression, options ...
 			}
 		}
 
-		return NewIterator(result), nil
+		iterator := NewIterator(result, options...)
+
+		sort.Sort(iterator)
+
+		return iterator, nil
+
 	}
 
 	return NewIterator(result), derp.New(404, "Datastore.Load", "Collection does not exist", collection)
