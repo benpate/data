@@ -14,12 +14,15 @@ type Person struct {
     journal.Journal  // Include this line here for all data tracking info.
 }
 
-// ID is the only field that you need to define separately from the Journal, in order to make this fit the data.Object interface
+// ID is the only field that you need to define separately from the Journal, 
+//in order to make this fit the data.Object interface
 func (person *Person) ID() string {
     return person.PersonID
 }
 
-// journal.Journal defines all of the other data points and methods required to meet the data.Object interface
+// journal.Journal defines all of the other data points and methods required 
+// to meet the data.Object interface
+
 // IsNew() bool
 // SetCreated(string)
 // SetUpdated(string)
