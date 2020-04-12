@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/benpate/derp v0.9.4
+	github.com/davecgh/go-spew v1.1.1
 	github.com/google/go-cmp v0.4.0 // indirect
 	github.com/stretchr/testify v1.5.1
 	github.com/tidwall/pretty v1.0.1 // indirect
