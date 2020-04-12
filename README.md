@@ -87,7 +87,7 @@ for it.Next(&person) {
 }
 ```
 
-## Expressions Builder
+### Expressions Builder
 
 Every database has its own query language, so this library provides in intermediate format that should be easy to convert into whatever specific language you need to use.
 
