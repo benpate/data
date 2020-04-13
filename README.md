@@ -45,19 +45,22 @@ ds := mongodb.New(uri, dbname)
 session := ds.Session()
 defer session.Close()
 
-// Returns an iterator that will loop through all records that match the provided criteria.
-it, err := session.List("Person", criteria, options...)
-
-
-// Load from database into a person object
+// LOAD from a person object from the database
 err := session.Load("Person", criteria, &person)
 
-// Insert/Update a person object in the database
+// INSERT/UPDATE a person object in the database
 err := session.Save("Person", person)
 
-// Delete a person from the database
+// DELETE a person from the database
 err := session.Delete("Person", person)
 
+
+// LIST many records from the database, by using an iterator that will loop through all records that match the provided criteria.
+it, err := session.List("Person", criteria, options...)
+
+for it.Next(&person) {
+    // do stuff with person.
+}
 ```
 
 ### data.mongodb
