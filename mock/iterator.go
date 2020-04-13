@@ -4,6 +4,7 @@ import (
 	"reflect"
 
 	"github.com/benpate/data"
+	"github.com/benpate/data/compare"
 	"github.com/benpate/data/option"
 	"github.com/benpate/derp"
 )
@@ -88,7 +89,7 @@ func (iterator *Iterator) Less(i int, j int) bool {
 			field2 := reflect.Indirect(reflect.ValueOf(object2)).FieldByName(record.FieldName).Interface()
 
 			// Use generic data.Compare function to compare them
-			comparision, err := data.Compare(field1, field2)
+			comparision, err := compare.Interface(field1, field2)
 
 			// If these two values cannot be compared, then they cannot be sorted either.  Return FALSE.
 			if err != nil {

@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/benpate/data"
+	"github.com/benpate/data/expression"
 	"github.com/benpate/data/option"
 	"github.com/benpate/derp"
 )
@@ -27,7 +28,7 @@ func (db *Datastore) Session(ctx context.Context) data.Session {
 }
 
 // List retrieves a group of records as an Iterator.
-func (db *Datastore) List(collection string, filter data.Expression, options ...option.Option) (data.Iterator, *derp.Error) {
+func (db *Datastore) List(collection string, criteria expression.Expression, options ...option.Option) (data.Iterator, *derp.Error) {
 
 	result := []data.Object{}
 
@@ -35,7 +36,7 @@ func (db *Datastore) List(collection string, filter data.Expression, options ...
 
 		for _, document := range collection {
 
-			if filter.Match((document)) {
+			if (criteria == nil) || (criteria.Match(MatcherFunc(document))) {
 				result = append(result, document)
 			}
 		}
@@ -52,18 +53,18 @@ func (db *Datastore) List(collection string, filter data.Expression, options ...
 }
 
 // Load retrieves a single record from the mock collection.
-func (db *Datastore) Load(collection string, filter data.Expression, target data.Object) *derp.Error {
+func (db *Datastore) Load(collection string, criteria expression.Expression, target data.Object) *derp.Error {
 
 	if collection, ok := (*db)[collection]; ok {
 
 		for _, document := range collection {
 
-			if filter.Match(document) {
+			if (criteria == nil) || (criteria.Match(MatcherFunc(document))) {
 				return populateInterface(document, target)
 			}
 		}
 
-		return derp.New(404, "Datastore.Load", "Document not found", filter)
+		return derp.New(404, "Datastore.Load", "Document not found", criteria)
 	}
 
 	return derp.New(404, "Datastore.Load", "Collection does not exist", collection)

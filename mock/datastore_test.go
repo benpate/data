@@ -4,11 +4,25 @@ import (
 	"context"
 	"testing"
 
-	"github.com/benpate/data"
+	"github.com/benpate/data/expression"
 	"github.com/benpate/data/journal"
 	"github.com/benpate/derp"
 	"github.com/stretchr/testify/assert"
 )
+
+// MODEL OBJECT
+
+type testPerson struct {
+	PersonID        string `bson:"_id"`
+	Name            string `bson:"name"`
+	Email           string `bson:"email"`
+	Age             int    `bson:"age"`
+	journal.Journal `bson:"journal"`
+}
+
+func (person testPerson) ID() string {
+	return person.PersonID
+}
 
 func TestDatastore(t *testing.T) {
 
@@ -16,7 +30,7 @@ func TestDatastore(t *testing.T) {
 
 	session := ds.Session(context.TODO())
 
-	john := &testPerson{
+	john := testPerson{
 		PersonID: "A",
 		Name:     "John Connor",
 		Email:    "john@connor.com",
@@ -24,7 +38,7 @@ func TestDatastore(t *testing.T) {
 
 	// CREATE
 	{
-		err := session.Save("Person", john, "created in test suite")
+		err := session.Save("Person", &john, "created in test suite")
 		assert.Nil(t, err)
 	}
 
@@ -32,7 +46,7 @@ func TestDatastore(t *testing.T) {
 	{
 		// Load a record from the db
 		person := testPerson{}
-		criteria := data.Expression{{"personId", "=", "A"}}
+		criteria := expression.New("personId", "=", "A")
 		err := session.Load("Person", criteria, &person)
 		assert.Nil(t, err)
 		assert.Equal(t, "A", person.PersonID)
@@ -58,7 +72,7 @@ func TestDatastore(t *testing.T) {
 	// "NOT FOUND"
 	{
 		person := testPerson{}
-		criteria := data.Expression{{"missingField", "=", "A"}}
+		criteria := expression.New("missingField", "=", "A")
 		err := session.Load("Person", criteria, &person)
 		assert.NotNil(t, err)
 	}
@@ -74,8 +88,7 @@ func TestList(t *testing.T) {
 	session.Save("Person", &testPerson{PersonID: "B", Name: "John Connor", Email: "john@connor.com"}, "Creating Record")
 	session.Save("Person", &testPerson{PersonID: "C", Name: "Kyle Reese", Email: "kyle@resistance.mil"}, "Creating Record")
 
-	criteria := data.Expression{}
-	criteria.Add("PersonID", "=", "A")
+	criteria := expression.New("PersonID", "=", "A")
 
 	it, err := session.List("Person", criteria)
 
@@ -100,7 +113,7 @@ func TestErrors(t *testing.T) {
 	person := &testPerson{}
 
 	{
-		err := session.Load("MissingCollection", data.Expression{}, person)
+		err := session.Load("MissingCollection", nil, person)
 		assert.NotNil(t, err)
 		assert.Equal(t, derp.CodeNotFoundError, err.Code)
 		assert.Equal(t, "Datastore.Load", err.Location)
@@ -115,17 +128,4 @@ func TestErrors(t *testing.T) {
 		assert.Equal(t, "Datastore.Save", err.Location)
 		assert.Equal(t, "Synthetic Error", err.Message)
 	}
-}
-
-// MODEL OBJECT
-
-type testPerson struct {
-	PersonID string
-	Name     string
-	Email    string
-	journal.Journal
-}
-
-func (person testPerson) ID() string {
-	return person.PersonID
 }
