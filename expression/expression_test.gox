@@ -1,10 +1,21 @@
-package data
+package expression
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+func TestExp(t *testing.T) {
+
+	exp := Empty()
+	exp := New("field", expression.OperatorEqual, "value").
+		And("field2", expression.OperatorLessOrEqual, "value2").
+		Or(
+			New("field", expression.OperatorGreaterThan, "value2").
+			And())
+
+}
 
 func TestExpression(t *testing.T) {
 
