@@ -89,28 +89,14 @@ for it.Next(&person) {
 
 ### Expression Builder
 
-Every database has its own query language, so this library provides in intermediate format that should be easy to convert into whatever specific language you need to use.
+Every database has its own query language, so this library provides in intermediate format that should be easy to convert into whatever specific language you need to use.  Check out the README.md in the expression folder for more details and examples.
 
 ```go
-// build a data incrementally
-c := data.NewExpression()
+// build single predicate expressions
+c := expression.New("name", "=", "John Connor")
 
-c.Add("id", data.OperatorEqual, 42)
-c.Add("deleteDate", data.OperatorEqual, 0)
-
-// build a data directly
-critria := data.Expression{{"id", "=", 42}, {"deleteDate", "=", 0}}
-
-// combine data expressions into a single value
-finalResult = criteria.Combine(data1, data2, data3)
-
-// Constants define standard expected operators
-data.OperatorEqual          = "="
-data.OperatorNotEqual       = "!="
-data.OperatorLessThan       = "<"
-data.OperatorLessOrEqual    = "<="
-data.OperatorGreaterThan    = ">"
-data.OperatorGreaterOrEqual = ">="
+// or chain logical expressions together
+c := expression.New("name", "=", "John Connor").Or("name", "=", "Sarah Connor")
 ```
 
 ### Query Options
@@ -120,13 +106,18 @@ each database adapter to implement each of these in its own query engine.
 
 ```go
 
-// query criteria: all records not yet deleted
-criteria := NewExpression().Add("deleteDate", "=", 0)
-
 // get a new iterator.  Sort results by first name.  Return only the first 100 rows.
-it := session.List("Person", Expression, options.SortAsc("name"), options.MaxRows(100))
-
+it := session.List(collection, criteria, options.SortAsc("name"), options.MaxRows(100))
 ```
+
+**`SortAsc(fieldname)`** tells the database to sort by a particular field, in ascending order
+
+**`SortDesc(fieldname)`** tells the database to sort by a particular field, in descending order
+
+**`FirstRow(count)`** tells the database to start returning records at the provided row number
+
+**`MaxRows(count)`** tells the database to limit the number of records to the designated number of rows.
+
 
 
 ## Pull Requests Welcome
