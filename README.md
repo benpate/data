@@ -11,6 +11,8 @@ This library helps to make simple database calls as easily as possible, by provi
 
 ### The "Object" interface
 
+The data library works with any object that implements the `Object` interface.  To implement this quickly in existing data models, you can just attach the `journal.Journal` object to your domain objects, and most of your work is already done.
+
 ```go
 // Object wraps all of the methods that a Domain Object must provide to Presto
 type Object interface {
@@ -32,9 +34,8 @@ type Object interface {
 }
 ```
 
-To implement this quickly, just attach the journal.Journal object to your domain objects, and most of your work is already done.
 
-### Using datasources
+### Datasource Interface
 
 ```go
 
@@ -63,13 +64,14 @@ for it.Next(&person) {
 }
 ```
 
-### data.mongodb
-
-This adapter implements the data interface for MongoDB.  It uses the standard MongoDB driver.
-
 ### data.mock
 
 This adapter implements the data interface for an in-memory datastore.  It is the world's worst database, and should only be used for creating unit tests.  If you use this "database" in production (hell, or even as a proof-of-concept demo) then you deserve the merciless mockery that fate holds for you.
+
+### data.mongodb
+
+This adapter implements the data interface for MongoDB.  It uses the standard MongoDB driver.  It is currently a work-in-progress, and not ready for use by anyone, for any reason.  It is very likely to blow up your server, launch the nukes, and unleash the plague on you, your customers, and your family.
+
 
 ## Retrieving Record Sets
 
