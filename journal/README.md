@@ -1,4 +1,4 @@
-# data.Journal
+# Journal
 
 This package provides *most* of the data and features required by the data.Object interface.  
 
@@ -29,3 +29,9 @@ func (person *Person) ID() string {
 // SetDeleted(string)
 
 ```
+
+
+
+## Pull Requests Welcome
+
+This library is a work in progress, and will benefit from your experience reports, use cases, and contributions.  If you have an idea for making this library better, send in a pull request.  We're all in this together! 📚
