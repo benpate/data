@@ -70,7 +70,7 @@ This adapter implements the data interface for an in-memory datastore.  It is th
 
 ## Retrieving Record Sets
 
-The "data" library includes an "iterator" interface that works to retrieve large sets of data from the datasource efficiently.
+This library also includes an "iterator" interface, for retrieving large sets of data from the datasource efficiently.
 
 ```go
 
