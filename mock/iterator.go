@@ -89,7 +89,7 @@ func (iterator *Iterator) Less(i int, j int) bool {
 			field2 := reflect.Indirect(reflect.ValueOf(object2)).FieldByName(record.FieldName).Interface()
 
 			// Use generic data.Compare function to compare them
-			comparision, err := compare.Interface(field1, field2)
+			comparison, err := compare.Interface(field1, field2)
 
 			// If these two values cannot be compared, then they cannot be sorted either.  Return FALSE.
 			if err != nil {
@@ -101,7 +101,7 @@ func (iterator *Iterator) Less(i int, j int) bool {
 
 			case option.SortDirectionDescending:
 
-				switch comparision {
+				switch comparison {
 				case 1:
 					return true // IF (i > j) and sort is descending, then i SHOULD appear before j.
 				case -1:
@@ -112,7 +112,7 @@ func (iterator *Iterator) Less(i int, j int) bool {
 
 			default: // option.SortDirectionAscending
 
-				switch comparision {
+				switch comparison {
 				case -1:
 					return true // if (i < j) and sort is ascending, then i SHOULD appear before j.
 				case 1:
