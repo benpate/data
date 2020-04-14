@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/benpate/data"
+	"github.com/benpate/data/expression"
 	"github.com/benpate/data/option"
 	"github.com/benpate/derp"
 	"go.mongodb.org/mongo-driver/bson"
@@ -20,7 +21,7 @@ type Session struct {
 }
 
 // List retrieves a group of objects from the database
-func (s Session) List(collection string, criteria data.Expression, options ...option.Option) (data.Iterator, *derp.Error) {
+func (s Session) List(collection string, criteria expression.Expression, options ...option.Option) (data.Iterator, *derp.Error) {
 
 	criteriaBSON := ExpressionToBSON(criteria)
 
@@ -36,7 +37,7 @@ func (s Session) List(collection string, criteria data.Expression, options ...op
 }
 
 // Load retrieves a single object from the database
-func (s Session) Load(collection string, criteria data.Expression, target data.Object) *derp.Error {
+func (s Session) Load(collection string, criteria expression.Expression, target data.Object) *derp.Error {
 
 	criteriaBSON := ExpressionToBSON(criteria)
 
