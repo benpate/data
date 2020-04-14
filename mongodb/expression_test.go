@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	"github.com/benpate/data/expression"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -41,12 +40,12 @@ func TestExpression(t *testing.T) {
 			expression.New("name", "=", "Sara Connor").And("favorite_color", "=", "green"),
 		)
 
-		assert.Equal(t, toJSON(ExpressionToBSON(exp)), `{"$or":[{"favorite_color":{"$eq":"blue"},"name":{"$eq":"John Connor"}},{"favorite_color":{"$eq":"green"},"name":{"$eq":"Sara Connor"}}]}`)
+		assert.Equal(t, toJSON(ExpressionToBSON(exp)), `{"$or":[{"$and":[{"name":{"$eq":"John Connor"}},{"favorite_color":{"$eq":"blue"}}]},{"$and":[{"name":{"$eq":"Sara Connor"}},{"favorite_color":{"$eq":"green"}}]}]}`)
 	}
 
 	{
 		exp := expression.New("name", "=", "John Connor").Or("favorite_color", "=", "blue")
-		assert.Equal(t, toJSON(ExpressionToBSON(exp)), `{"$or:[{"favorite_color":{"$eq":"blue"}},{"name":{"$eq":"John Connor"}}]}`)
+		assert.Equal(t, toJSON(ExpressionToBSON(exp)), `{"$or":[{"name":{"$eq":"John Connor"}},{"favorite_color":{"$eq":"blue"}}]}`)
 	}
 
 	{
@@ -55,10 +54,8 @@ func TestExpression(t *testing.T) {
 			expression.New("name", "=", "Sara Connor").Or("favorite_color", "=", "green"),
 		)
 
-		t.Log(spew.Sdump(exp))
+		assert.Equal(t, toJSON(ExpressionToBSON(exp)), `{"$and":[{"$or":[{"name":{"$eq":"John Connor"}},{"favorite_color":{"$eq":"blue"}}]},{"$or":[{"name":{"$eq":"Sara Connor"}},{"favorite_color":{"$eq":"green"}}]}]}`)
 
-		assert.Equal(t, toJSON(ExpressionToBSON(exp)), `{"$and":[{"$or:[{"favorite_color":{"$eq":"blue"}},{"name":{"$eq":"John Connor"}}],{"$or:[{"favorite_color":{"$eq":"green"}},{"name":{"$eq":"Sara Connor"}}]}]}`)
-		t.Error()
 	}
 	/*
 		// Test that all operators are translated correctly.
