@@ -1,62 +1,60 @@
 package mongodb
 
 import (
-	"github.com/benpate/data"
+	"github.com/benpate/data/expression"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
 // ExpressionToBSON converts a data.Expression value into pure bson.
-func ExpressionToBSON(c data.Expression) bson.M {
+func ExpressionToBSON(criteria expression.Expression) bson.M {
 
-	result := bson.M{}
+	switch c := criteria.(type) {
 
-	for _, predicate := range c {
+	case expression.Predicate:
 
-		newBSON := predicateToBSON(predicate)
+		result := bson.M{}
+		result[c.Field] = bson.M{operatorBSON(c.Operator): c.Value}
+		return result
 
-		// If this field does not yet exist in the result, then just add it and continue the loop
-		if _, ok := result[predicate.Name]; !ok {
-			result[predicate.Name] = newBSON
-			continue
+	case expression.AndExpression:
+
+		array := bson.A{}
+
+		for _, exp := range c {
+			array = append(array, ExpressionToBSON(exp))
 		}
 
-		// fall through to here means that the element already exists in the result.
-		switch current := result[predicate.Name].(type) {
+		return bson.M{"$and": array}
 
-		case bson.A:
-			result[predicate.Name] = append(current, newBSON)
+	case expression.OrExpression:
 
-		case bson.M:
-			result[predicate.Name] = bson.A{current, newBSON}
+		array := bson.A{}
+
+		for _, exp := range c {
+			array = append(array, ExpressionToBSON(exp))
 		}
+
+		return bson.M{"$or": array}
 	}
 
-	result["journal.deleteDate"] = 0
-
-	return result
+	return bson.M{}
 }
 
-// predicateToBSON converts a standard data.Predicate into a bson.E
-func predicateToBSON(predicate data.Predicate) bson.M {
-	operator := operator2BSON(predicate.Operator)
-	return bson.M{operator: predicate.Value}
-}
-
-// operator2BSON converts a standard data.Operator into the operators used by mongodb
-func operator2BSON(operator string) string {
+// operatorBSON converts a standard data.Operator into the operators used by mongodb
+func operatorBSON(operator string) string {
 
 	switch operator {
-	case data.OperatorEqual:
+	case expression.OperatorEqual:
 		return "$eq"
-	case data.OperatorNotEqual:
+	case expression.OperatorNotEqual:
 		return "$ne"
-	case data.OperatorLessThan:
+	case expression.OperatorLessThan:
 		return "$lt"
-	case data.OperatorLessOrEqual:
+	case expression.OperatorLessOrEqual:
 		return "$le"
-	case data.OperatorGreaterOrEqual:
+	case expression.OperatorGreaterOrEqual:
 		return "$ge"
-	case data.OperatorGreaterThan:
+	case expression.OperatorGreaterThan:
 		return "$gt"
 	default:
 		return "$eq"
