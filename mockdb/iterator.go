@@ -1,7 +1,8 @@
-package mock
+package mockdb
 
 import (
 	"reflect"
+	"strings"
 
 	"github.com/benpate/data"
 	"github.com/benpate/data/compare"
@@ -84,41 +85,41 @@ func (iterator *Iterator) Less(i int, j int) bool {
 		// Only use "sort" type options
 		if record, ok := record.(option.SortConfig); ok {
 
-			// Get interface{} values for each of the two fields to be compared
-			field1 := reflect.Indirect(reflect.ValueOf(object1)).FieldByName(record.FieldName).Interface()
-			field2 := reflect.Indirect(reflect.ValueOf(object2)).FieldByName(record.FieldName).Interface()
+			// Try to find the interface{} value for object1
+			if field1, ok := safeFieldInterface(object1, record.FieldName); ok {
 
-			// Use generic data.Compare function to compare them
-			comparison, err := compare.Interface(field1, field2)
+				// Try to find the interface{} value for object1
+				if field2, ok := safeFieldInterface(object2, record.FieldName); ok {
 
-			// If these two values cannot be compared, then they cannot be sorted either.  Return FALSE.
-			if err != nil {
-				return false
-			}
+					// Use generic data.Compare function to compare them
+					if comparison, err := compare.Interface(field1, field2); err == nil {
 
-			// Return result depends on the direction of the sort order
-			switch record.Direction {
+						// Return result depends on the direction of the sort order
+						switch record.Direction {
 
-			case option.SortDirectionDescending:
+						case option.SortDirectionDescending:
 
-				switch comparison {
-				case 1:
-					return true // IF (i > j) and sort is descending, then i SHOULD appear before j.
-				case -1:
-					return false // IF (i == j) and sort is descending, then i SHOULD NOT appear before j.
-				default:
-					// (i == j) so fall through to next comparison
-				}
+							switch comparison {
+							case 1:
+								return true // IF (i > j) and sort is descending, then i SHOULD appear before j.
+							case -1:
+								return false // IF (i == j) and sort is descending, then i SHOULD NOT appear before j.
+							default:
+								// (i == j) so fall through to next comparison
+							}
 
-			default: // option.SortDirectionAscending
+						default: // option.SortDirectionAscending
 
-				switch comparison {
-				case -1:
-					return true // if (i < j) and sort is ascending, then i SHOULD appear before j.
-				case 1:
-					return false // if (i > j) and sort is ascending, then i SHOULD NOT appear before j.
-				default:
-					// (i == j) so fall through to next comparison
+							switch comparison {
+							case -1:
+								return true // if (i < j) and sort is ascending, then i SHOULD appear before j.
+							case 1:
+								return false // if (i > j) and sort is ascending, then i SHOULD NOT appear before j.
+							default:
+								// (i == j) so fall through to next comparison
+							}
+						}
+					}
 				}
 			}
 		}
@@ -140,4 +141,42 @@ func (iterator *Iterator) Swap(i int, j int) {
 	temp := iterator.Data[i]
 	iterator.Data[i] = iterator.Data[j]
 	iterator.Data[j] = temp
+}
+
+func safeFieldInterface(object interface{}, fieldName string) (interface{}, bool) {
+
+	// If the object is empty, then so is the field
+	if object == nil {
+		return false, false
+	}
+
+	value := reflect.Indirect(reflect.ValueOf(object))
+	typeOf := value.Type()
+
+	// Guarantee that the object is a "struct" type
+	if typeOf.Kind() != reflect.Struct {
+		return false, false
+	}
+
+	// Case insensitive search on the fieldName
+	fieldName = strings.ToUpper(fieldName)
+
+	// Search every field in the structure
+	for index := 0; index < typeOf.NumField(); index = index + 1 {
+
+		field := typeOf.Field(index)
+
+		if strings.ToUpper(field.Name) == fieldName {
+			return value.Field(index).Interface(), true
+		}
+
+		tag := field.Tag.Get("bson")
+
+		if strings.ToUpper(tag) == fieldName {
+			return value.Field(index).Interface(), true
+		}
+	}
+
+	// Fall through means that we couldn't find the field
+	return false, false
 }
