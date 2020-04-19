@@ -10,7 +10,24 @@ func (andExpression AndExpression) And(name string, operator string, value inter
 
 // And combines one or more expression parameters into an AndExpression
 func And(expressions ...Expression) AndExpression {
-	return AndExpression(expressions)
+
+	result := AndExpression{}
+
+	// Add each expression into our result one at a time.
+	for _, item := range expressions {
+
+		// Special case.  If the sub-expression is ALSO an AndExpression,
+		if items, ok := item.(AndExpression); ok {
+
+			// Then just APPEND it to our current result
+			result = append(result, items...)
+
+		} else {
+			result = append(result, item)
+		}
+	}
+
+	return result
 }
 
 // Match implements the Expression interface.  It loops through all sub-expressions and returns TRUE if all of them match

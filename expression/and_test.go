@@ -1,0 +1,38 @@
+package expression
+
+import (
+	"testing"
+
+	"github.com/davecgh/go-spew/spew"
+	"github.com/stretchr/testify/assert"
+)
+
+// This tests our ability to "collapse" AndExpressions into a single expression, which should keep
+// expression trees simpler, and make it easier to traverse/troubleshoot them.
+func TestAndExpression(t *testing.T) {
+
+	exp := And(
+		And(
+			New("field0", "=", 0),
+		),
+		And(
+			New("field1", "=", 1),
+			New("field2", "=", 2),
+		),
+		And(
+			New("field3", "=", 3),
+			New("field4", "=", 4),
+			And(
+				New("field5", "=", 5),
+				New("field6", "=", 6),
+			),
+		),
+	)
+
+	spew.Dump(exp)
+
+	assert.Equal(t, "field0", exp[0].(Predicate).Field)
+	assert.Equal(t, "field1", exp[1].(Predicate).Field)
+	assert.Equal(t, "field2", exp[2].(Predicate).Field)
+	assert.Equal(t, "field3", exp[3].(Predicate).Field)
+}
