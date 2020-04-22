@@ -17,3 +17,8 @@ func (collection Collection) FindByObjectID(objectID string) int {
 
 	return -1
 }
+
+// NewCollection creates a new collection of data.Objects
+func NewCollection() Collection {
+	return Collection{}
+}
