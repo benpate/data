@@ -95,7 +95,7 @@ func (session Session) Delete(collection string, object data.Object, comment str
 	c := session.getCollection(collection)
 
 	if index := c.FindByObjectID(object.ID()); index >= 0 {
-		(*session.Datastore)[collection] = append(c[:index-1], c[index+1:]...)
+		(*session.Datastore)[collection] = append(c[:index], c[index+1:]...)
 	}
 
 	return nil
