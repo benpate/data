@@ -14,9 +14,6 @@ import (
 // Datastore is a mock database
 type Datastore map[string]Collection
 
-// Collection is a mock table
-type Collection map[string]data.Object
-
 // New returns a fully initialized Database object
 func New() data.Datastore {
 	return &Datastore{}
@@ -49,7 +46,7 @@ func (db *Datastore) List(collection string, criteria expression.Expression, opt
 
 	}
 
-	return NewIterator(result), derp.New(404, "Datastore.Load", "Collection does not exist", collection)
+	return NewIterator(result), derp.New(404, "mockdb.Load", "Collection does not exist", collection)
 }
 
 // Load retrieves a single record from the mock collection.
@@ -64,44 +61,45 @@ func (db *Datastore) Load(collection string, criteria expression.Expression, tar
 			}
 		}
 
-		return derp.New(404, "Datastore.Load", "Document not found", criteria)
+		return derp.New(404, "mockdb.Load", "Document not found", criteria)
 	}
 
-	return derp.New(404, "Datastore.Load", "Collection does not exist", collection)
+	return derp.New(404, "mockdb.Load", "Collection does not exist", collection)
 }
 
 // Save adds/inserts a new record into the mock database
 func (db *Datastore) Save(collection string, object data.Object, comment string) *derp.Error {
 
 	if strings.HasPrefix(comment, "ERROR") {
-		return derp.New(500, "Datastore.Save", "Synthetic Error", comment)
+		return derp.New(500, "mockdb.Save", "Synthetic Error", comment)
 	}
 
-	if _, ok := (*db)[collection]; !ok {
-		(*db)[collection] = Collection{}
-	}
+	object.SetUpdated(comment)
 
 	if object.IsNew() {
 		object.SetCreated(comment)
+		(*db)[collection] = append((*db)[collection], object)
+		return nil
 	}
-	object.SetUpdated(comment)
-	(*db)[collection][object.ID()] = object
 
-	return nil
+	if index := (*db)[collection].FindByObjectID(object.ID()); index >= 0 {
+		(*db)[collection][index] = object
+		return nil
+	}
+
+	return derp.New(500, "mockdb.Save", "Object Not Found", "attempted to update object, but it does not exist in the datastore", object)
 }
 
 // Delete PERMANENTLY removes a record from the mock database.
 func (db *Datastore) Delete(collection string, object data.Object, comment string) *derp.Error {
 
 	if strings.HasPrefix(comment, "ERROR") {
-		return derp.New(500, "Datastore.Delete", "Synthetic Error", comment)
+		return derp.New(500, "mockdb.Delete", "Synthetic Error", comment)
 	}
 
-	if _, ok := (*db)[collection]; !ok {
-		(*db)[collection] = Collection{}
+	if index := (*db)[collection].FindByObjectID(object.ID()); index >= 0 {
+		(*db)[collection] = append((*db)[collection[:index-1]], (*db)[collection][index+1:]...)
 	}
-
-	delete((*db)[collection], object.ID())
 
 	return nil
 }
