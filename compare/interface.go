@@ -399,7 +399,18 @@ func Interface(value1 interface{}, value2 interface{}) (int, *derp.Error) {
 		if v2, ok := value2.(string); ok {
 			return String(v1, v2), nil
 		}
+
+	case Stringer:
+
+		if v2, ok := value2.(Stringer); ok {
+			return String(v1.String(), v2.String()), nil
+		}
 	}
 
 	return 0, derp.New(500, "compare.Interface", "Incompatible Types", value1, value2)
+}
+
+// Stringer is an interface for types that can be converted to String
+type Stringer interface {
+	String() string
 }
