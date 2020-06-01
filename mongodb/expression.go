@@ -18,6 +18,10 @@ func ExpressionToBSON(criteria expression.Expression) bson.M {
 
 	case expression.AndExpression:
 
+		if len(c) == 0 {
+			return nil
+		}
+
 		array := bson.A{}
 
 		for _, exp := range c {
@@ -27,6 +31,10 @@ func ExpressionToBSON(criteria expression.Expression) bson.M {
 		return bson.M{"$and": array}
 
 	case expression.OrExpression:
+
+		if len(c) == 0 {
+			return nil
+		}
 
 		array := bson.A{}
 
