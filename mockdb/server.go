@@ -6,17 +6,17 @@ import (
 	"github.com/benpate/data"
 )
 
-// Datastore is a mock database
-type Datastore map[string]Collection
+// Server is a mock database
+type Server map[string]Collection
 
 // New returns a fully initialized Database object
-func New() data.Datastore {
-	return Datastore{}
+func New() data.Server {
+	return Server{}
 }
 
 // Session returns a session that can be used as a mock database.
-func (db Datastore) Session(ctx context.Context) data.Session {
+func (db Server) Session(ctx context.Context) data.Session {
 	return Session{
-		Datastore: &db,
+		Server: &db,
 	}
 }

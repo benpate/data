@@ -18,9 +18,9 @@ func TestSampleDataset(t *testing.T) {
 	s2.Close()
 }
 
-func getSampleDataset() Datastore {
+func getSampleDataset() Server {
 
-	return Datastore{
+	return Server{
 		"Person": {
 			&testPerson{PersonID: "michael", Name: "Michael Jackson", Email: "mike@jackson.com"},
 			&testPerson{PersonID: "jermaine", Name: "Jermaine Jackson", Email: "jer@jackson.com"},

@@ -12,7 +12,7 @@ import (
 
 // Session is a mock database session
 type Session struct {
-	Datastore *Datastore
+	Server *Server
 }
 
 // List retrieves a group of records as an Iterator.
@@ -73,7 +73,7 @@ func (session Session) Save(collection string, object data.Object, comment strin
 
 	if object.IsNew() {
 		object.SetCreated(comment)
-		(*session.Datastore)[collection] = append(c, object)
+		(*session.Server)[collection] = append(c, object)
 		return nil
 	}
 
@@ -95,7 +95,7 @@ func (session Session) Delete(collection string, object data.Object, comment str
 	c := session.getCollection(collection)
 
 	if index := c.FindByObjectID(object.ID()); index >= 0 {
-		(*session.Datastore)[collection] = append(c[:index], c[index+1:]...)
+		(*session.Server)[collection] = append(c[:index], c[index+1:]...)
 	}
 
 	return nil
@@ -106,7 +106,7 @@ func (session Session) Close() {}
 
 func (session Session) hasCollection(collection string) bool {
 
-	_, ok := (*session.Datastore)[collection]
+	_, ok := (*session.Server)[collection]
 
 	return ok
 }
@@ -115,8 +115,8 @@ func (session Session) hasCollection(collection string) bool {
 func (session Session) getCollection(collection string) Collection {
 
 	if session.hasCollection(collection) == false {
-		(*session.Datastore)[collection] = NewCollection()
+		(*session.Server)[collection] = NewCollection()
 	}
 
-	return (*session.Datastore)[collection]
+	return (*session.Server)[collection]
 }
