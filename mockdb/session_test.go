@@ -15,32 +15,34 @@ func TestDelete(t *testing.T) {
 
 	ds := getSampleDataset()
 
-	session := ds.Session(context.TODO()).(Session)
+	session, _ := ds.Session(context.TODO())
+	collection := session.Collection("Person").(Collection)
 
-	assert.Equal(t, 4, len(session.getCollection("Person")))
+	assert.Equal(t, 4, len(collection.getObjects()))
 
 	// Delete FIRST entry
-	assert.Nil(t, session.Delete("Person", &testPerson{PersonID: "michael"}, ""))
-	assert.Equal(t, 3, len(session.getCollection("Person")))
+	assert.Nil(t, collection.Delete(&testPerson{PersonID: "michael"}, ""))
+	assert.Equal(t, 3, len(collection.getObjects()))
 
 	// Delete MIDDLE entry
-	assert.Nil(t, session.Delete("Person", &testPerson{PersonID: "latoya"}, ""))
-	assert.Equal(t, 2, len(session.getCollection("Person")))
+	assert.Nil(t, collection.Delete(&testPerson{PersonID: "latoya"}, ""))
+	assert.Equal(t, 2, len(collection.getObjects()))
 
 	// Delete LAST entry
-	assert.Nil(t, session.Delete("Person", &testPerson{PersonID: "janet"}, ""))
-	assert.Equal(t, 1, len(session.getCollection("Person")))
+	assert.Nil(t, collection.Delete(&testPerson{PersonID: "janet"}, ""))
+	assert.Equal(t, 1, len(collection.getObjects()))
 
 	// Delete ONLY entry
-	assert.Nil(t, session.Delete("Person", &testPerson{PersonID: "jermaine"}, ""))
-	assert.Equal(t, 0, len(session.getCollection("Person")))
+	assert.Nil(t, collection.Delete(&testPerson{PersonID: "jermaine"}, ""))
+	assert.Equal(t, 0, len(collection.getObjects()))
 }
 
 func TestSession(t *testing.T) {
 
 	ds := New()
 
-	session := ds.Session(context.TODO())
+	session, _ := ds.Session(context.TODO())
+	collection := session.Collection("Person")
 
 	john := testPerson{
 		PersonID: "A",
@@ -50,7 +52,7 @@ func TestSession(t *testing.T) {
 
 	// CREATE
 	{
-		err := session.Save("Person", &john, "created in test suite")
+		err := collection.Save(&john, "created in test suite")
 		assert.Nil(t, err)
 	}
 
@@ -59,7 +61,7 @@ func TestSession(t *testing.T) {
 		// Load a record from the db
 		person := testPerson{}
 		criteria := expression.New("_id", "=", "A")
-		err := session.Load("Person", criteria, &person)
+		err := collection.Load(criteria, &person)
 		assert.Nil(t, err)
 		assert.Equal(t, "A", person.PersonID)
 		assert.Equal(t, "John Connor", person.Name)
@@ -70,11 +72,11 @@ func TestSession(t *testing.T) {
 		person.Email = "sarah@sky.net"
 
 		// Save the record
-		err = session.Save("Person", &person, "Comment Here")
+		err = collection.Save(&person, "Comment Here")
 		assert.Nil(t, err)
 
 		person2 := testPerson{}
-		err = session.Load("Person", criteria, &person2)
+		err = collection.Load(criteria, &person2)
 		assert.Nil(t, err)
 		assert.Equal(t, "Sarah Connor", person2.Name)
 		assert.Equal(t, "sarah@sky.net", person2.Email)
@@ -98,15 +100,16 @@ func TestList(t *testing.T) {
 
 	ds := New()
 
-	session := ds.Session(context.TODO())
+	session, _ := ds.Session(context.TODO())
+	collection := session.Collection("Person")
 
-	session.Save("Person", &testPerson{PersonID: "A", Name: "Sarah Connor", Email: "sarah@sky.net"}, "Creating Record")
-	session.Save("Person", &testPerson{PersonID: "B", Name: "John Connor", Email: "john@connor.com"}, "Creating Record")
-	session.Save("Person", &testPerson{PersonID: "C", Name: "Kyle Reese", Email: "kyle@resistance.mil"}, "Creating Record")
+	collection.Save(&testPerson{PersonID: "A", Name: "Sarah Connor", Email: "sarah@sky.net"}, "Creating Record")
+	collection.Save(&testPerson{PersonID: "B", Name: "John Connor", Email: "john@connor.com"}, "Creating Record")
+	collection.Save(&testPerson{PersonID: "C", Name: "Kyle Reese", Email: "kyle@resistance.mil"}, "Creating Record")
 
 	criteria := expression.New("_id", "=", "A")
 
-	it, err := session.List("Person", criteria)
+	it, err := collection.List(criteria)
 
 	assert.Nil(t, err)
 
@@ -124,12 +127,12 @@ func TestErrors(t *testing.T) {
 
 	ds := New()
 
-	session := ds.Session(context.TODO())
+	session, _ := ds.Session(context.TODO())
 
 	person := &testPerson{}
 
 	{
-		err := session.Load("MissingCollection", nil, person)
+		err := session.Collection("MissingCollection").Load(nil, person)
 		assert.NotNil(t, err)
 		assert.Equal(t, derp.CodeNotFoundError, err.Code)
 		assert.Equal(t, "mockdb.Load", err.Location)
@@ -138,7 +141,7 @@ func TestErrors(t *testing.T) {
 	}
 
 	{
-		err := session.Save("Person", person, "ERROR: Testing error codes")
+		err := session.Collection("Person").Save(person, "ERROR: Testing error codes")
 		assert.NotNil(t, err)
 		assert.Equal(t, derp.CodeInternalError, err.Code)
 		assert.Equal(t, "mockdb.Save", err.Location)

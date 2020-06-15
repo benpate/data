@@ -38,17 +38,17 @@ func TestIterator1(t *testing.T) {
 
 func TestIterator2(t *testing.T) {
 
-	const collection = "Person"
-
 	data := getTestData()
 
-	s := New().Session(context.TODO())
+	session, _ := New().Session(context.TODO())
+
+	collection := session.Collection("Person")
 
 	for _, record := range data {
-		s.Save(collection, record, "Initial Insert")
+		collection.Save(record, "Initial Insert")
 	}
 
-	it, err := s.List(collection, nil, option.SortAsc("name"))
+	it, err := collection.List(nil, option.SortAsc("name"))
 
 	if err != nil {
 		t.Error(err)
@@ -188,41 +188,3 @@ func getTestData() []data.Object {
 		},
 	}
 }
-
-/*
-func getTestStreamService() Stream {
-
-	// Create service
-	datasource := mock.New()
-	factory := NewFactory(datasource)
-	service := factory.Stream()
-
-	// Initial data to load
-	data := []*model.Stream{
-		{
-			StreamID: primitive.NewObjectID(),
-			Label:    "My First Stream",
-			Token:    "1-my-first-stream",
-		},
-		{
-			StreamID: primitive.NewObjectID(),
-			Label:    "My Second Stream",
-			Token:    "2-my-second-stream",
-		},
-		{
-			StreamID: primitive.NewObjectID(),
-			Label:    "My Third Stream",
-			Token:    "3-my-third-stream",
-		},
-	}
-
-	// Populate datasource
-	for _, record := range data {
-		if err := service.Save(record, "comment"); err != nil {
-			panic(err)
-		}
-	}
-
-	return service
-}
-*/

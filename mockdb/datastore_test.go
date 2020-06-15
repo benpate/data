@@ -8,13 +8,13 @@ import (
 func TestNewDatastore(t *testing.T) {
 
 	ds1 := New()
-	s1 := ds1.Session(context.TODO())
+	s1, _ := ds1.Session(context.TODO())
 	s1.Close()
 }
 
 func TestSampleDataset(t *testing.T) {
 	ds2 := getSampleDataset()
-	s2 := ds2.Session(context.TODO())
+	s2, _ := ds2.Session(context.TODO())
 	s2.Close()
 }
 
