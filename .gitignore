@@ -14,5 +14,8 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
+# System files for macOS 
+.DS_Store
+
 # Files specific to this repo
 /mongodb/.private_test.go
