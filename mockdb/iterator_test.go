@@ -40,7 +40,7 @@ func TestIterator2(t *testing.T) {
 
 	data := getTestData()
 
-	session, _ := New().Session(context.TODO())
+	session := New().Session(context.TODO())
 
 	collection := session.Collection("Person")
 

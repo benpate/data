@@ -35,16 +35,10 @@ func New(uri string, database string) (Server, *derp.Error) {
 }
 
 // Session returns a new client session that can be used to perform CRUD transactions on this datastore.
-func (db Server) Session(ctx context.Context) (data.Session, *derp.Error) {
+func (db Server) Session(ctx context.Context) data.Session {
 
-	if err := db.Client.Connect(ctx); err != nil {
-		return nil, derp.New(500, "data.mongodb.Session", "Could not connect to client database", err)
-	}
-
-	result := Session{
+	return Session{
 		database: db.Database,
 		context:  ctx,
 	}
-
-	return result, nil
 }
