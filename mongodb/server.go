@@ -2,7 +2,6 @@ package mongodb
 
 import (
 	"context"
-	"time"
 
 	"github.com/benpate/data"
 	"github.com/benpate/derp"
@@ -26,11 +25,7 @@ func New(uri string, database string) (Server, *derp.Error) {
 		return Server{}, derp.Wrap(err, "data.mongodb.New", "Error creating mongodb client")
 	}
 
-	// Context for connecting to the server only
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
-	defer cancel()
-
-	if err := client.Connect(ctx); err != nil {
+	if err := client.Connect(context.Background()); err != nil {
 		return Server{}, derp.Wrap(err, "data.mongodb.New", "Error connecting to mongodb Server")
 	}
 
