@@ -12,8 +12,8 @@ import (
 // Server is an abstract representation of a MongoDB database.  It implements the data.Server interface,
 // so that it should be usable anywhere that requires a data.Server.
 type Server struct {
-	Client   mongo.Client
-	Database string
+	Client   *mongo.Client
+	Database *mongo.Database
 }
 
 // New returns a fully populated mongodb.Server.  It requires that you provide the URI for the mongodb
@@ -26,9 +26,13 @@ func New(uri string, database string) (Server, *derp.Error) {
 		return Server{}, derp.Wrap(err, "data.mongodb.New", "Error creating mongodb client")
 	}
 
+	if err := client.Connect(context.Background()); err != nil {
+		return Server{}, derp.Wrap(err, "data.mongodb.New", "Error connecting to mongodb Server")
+	}
+
 	result := Server{
-		Database: database,
-		Client:   *client,
+		Client:   client,
+		Database: client.Database(database),
 	}
 
 	return result, nil
@@ -37,12 +41,8 @@ func New(uri string, database string) (Server, *derp.Error) {
 // Session returns a new client session that can be used to perform CRUD transactions on this datastore.
 func (server Server) Session(ctx context.Context) (data.Session, error) {
 
-	if err := server.Client.Connect(ctx); err != nil {
-		return nil, derp.Wrap(err, "data.mongodb.New", "Error connecting to mongodb Server")
-	}
-
 	return Session{
-		database: server.Client.Database(server.Database),
+		database: server.Database,
 		context:  ctx,
 	}, nil
 }
