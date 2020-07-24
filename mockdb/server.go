@@ -15,12 +15,12 @@ func New() data.Server {
 }
 
 // Session returns a session that can be used as a mock database.
-func (server Server) Session(ctx context.Context) data.Session {
+func (server Server) Session(ctx context.Context) (data.Session, error) {
 
 	return Session{
 		Server:  &server,
 		Context: ctx,
-	}
+	}, nil
 }
 
 // hasCollection returns TRUE if the designated collection already exists in the Server
