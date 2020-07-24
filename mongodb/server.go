@@ -2,6 +2,7 @@ package mongodb
 
 import (
 	"context"
+	"time"
 
 	"github.com/benpate/data"
 	"github.com/benpate/derp"
@@ -12,7 +13,6 @@ import (
 // Server is an abstract representation of a MongoDB database.  It implements the data.Server interface,
 // so that it should be usable anywhere that requires a data.Server.
 type Server struct {
-	Client   *mongo.Client
 	Database *mongo.Database
 }
 
@@ -23,11 +23,18 @@ func New(uri string, database string) (Server, *derp.Error) {
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 
 	if err != nil {
-		return Server{}, derp.New(500, "data.mongodb.Session", "Error creating mongodb client", err)
+		return Server{}, derp.Wrap(err, "data.mongodb.New", "Error creating mongodb client")
+	}
+
+	// Context for connecting to the server only
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	if err := client.Connect(ctx); err != nil {
+		return Server{}, derp.Wrap(err, "data.mongodb.New", "Error connecting to mongodb Server")
 	}
 
 	result := Server{
-		Client:   client,
 		Database: client.Database(database),
 	}
 
@@ -35,10 +42,10 @@ func New(uri string, database string) (Server, *derp.Error) {
 }
 
 // Session returns a new client session that can be used to perform CRUD transactions on this datastore.
-func (db Server) Session(ctx context.Context) data.Session {
+func (server Server) Session(ctx context.Context) data.Session {
 
 	return Session{
-		database: db.Database,
+		database: server.Database,
 		context:  ctx,
 	}
 }
