@@ -3,11 +3,6 @@ package expression
 // AndExpression combines a series of sub-expressions using AND logic
 type AndExpression []Expression
 
-// And allows an additional predicate into this AndExpression
-func (andExpression AndExpression) And(name string, operator string, value interface{}) AndExpression {
-	return append(andExpression, New(name, operator, value))
-}
-
 // And combines one or more expression parameters into an AndExpression
 func And(expressions ...Expression) AndExpression {
 
@@ -15,19 +10,27 @@ func And(expressions ...Expression) AndExpression {
 
 	// Add each expression into our result one at a time.
 	for _, item := range expressions {
-
-		// Special case.  If the sub-expression is ALSO an AndExpression,
-		if items, ok := item.(AndExpression); ok {
-
-			// Then just APPEND it to our current result
-			result = append(result, items...)
-
-		} else {
-			result = append(result, item)
-		}
+		result = result.Add(item)
 	}
 
 	return result
+}
+
+// Add appends a new expression into this compound expression
+func (andExpression AndExpression) Add(exp Expression) AndExpression {
+
+	// If we're adding another AndExpression to this one, then we can simply concatenate its individual values
+	if exp, ok := exp.(AndExpression); ok {
+		return append(andExpression, exp...)
+	}
+
+	// Fall through to here means that we need to wrap the sub-expression as a single value.
+	return append(andExpression, exp)
+}
+
+// And allows an additional predicate into this AndExpression
+func (andExpression AndExpression) And(name string, operator string, value interface{}) AndExpression {
+	return andExpression.Add(New(name, operator, value))
 }
 
 // Match implements the Expression interface.  It loops through all sub-expressions and returns TRUE if all of them match
