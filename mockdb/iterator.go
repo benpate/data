@@ -33,6 +33,11 @@ func (iterator *Iterator) Reset() {
 
 /// THESE FUNCTIONS IMPLEMENT THE Data.Iterator INTERFACE
 
+// Count returns the total number of records contained in this iterator
+func (iterator *Iterator) Count() int {
+	return len(iterator.Data)
+}
+
 // Next moves the Iterator to the next position in the dataset.
 // If there is another record in the dataset, it returns TRUE, and
 // writes the next record to the "output" variable.
