@@ -12,8 +12,8 @@ import (
 // Server is an abstract representation of a MongoDB database.  It implements the data.Server interface,
 // so that it should be usable anywhere that requires a data.Server.
 type Server struct {
-	Client   *mongo.Client
-	Database *mongo.Database
+	client   *mongo.Client
+	database *mongo.Database
 }
 
 // New returns a fully populated mongodb.Server.  It requires that you provide the URI for the mongodb
@@ -31,8 +31,8 @@ func New(uri string, database string) (Server, *derp.Error) {
 	}
 
 	result := Server{
-		Client:   client,
-		Database: client.Database(database),
+		client:   client,
+		database: client.Database(database),
 	}
 
 	return result, nil
@@ -42,7 +42,12 @@ func New(uri string, database string) (Server, *derp.Error) {
 func (server Server) Session(ctx context.Context) (data.Session, *derp.Error) {
 
 	return Session{
-		database: server.Database,
+		database: server.database,
 		context:  ctx,
 	}, nil
+}
+
+// Mongo returns the underlying mongodb client for libraries that need to bypass this abstraction.
+func (server Server) Mongo() *mongo.Client {
+	return server.client
 }

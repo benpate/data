@@ -106,3 +106,8 @@ func (c Collection) Delete(object data.Object, note string) *derp.Error {
 	object.SetDeleted(note)
 	return c.Save(object, note)
 }
+
+// Mongo returns the underlying mongodb collection for libraries that need to bypass this abstraction.
+func (c Collection) Mongo() *mongo.Collection {
+	return c.collection
+}

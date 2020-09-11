@@ -28,3 +28,8 @@ func (s Session) Close() {
 	s.database.Client().Disconnect(s.context)
 	return
 }
+
+// Mongo returns the underlying mongodb client for libraries that need to bypass this abstraction.
+func (s Session) Mongo() *mongo.Database {
+	return s.database
+}
