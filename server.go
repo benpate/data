@@ -5,9 +5,11 @@ package data
 
 import (
 	"context"
+
+	"github.com/benpate/derp"
 )
 
 // Server is an abstract representation of a database and its connection information.
 type Server interface {
-	Session(context.Context) (Session, error)
+	Session(context.Context) (Session, *derp.Error)
 }

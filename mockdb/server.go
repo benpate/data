@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/benpate/data"
+	"github.com/benpate/derp"
 )
 
 // Server is a mock database
@@ -15,7 +16,7 @@ func New() data.Server {
 }
 
 // Session returns a session that can be used as a mock database.
-func (server Server) Session(ctx context.Context) (data.Session, error) {
+func (server Server) Session(ctx context.Context) (data.Session, *derp.Error) {
 
 	return Session{
 		Server:  &server,

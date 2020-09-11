@@ -39,7 +39,7 @@ func New(uri string, database string) (Server, *derp.Error) {
 }
 
 // Session returns a new client session that can be used to perform CRUD transactions on this datastore.
-func (server Server) Session(ctx context.Context) (data.Session, error) {
+func (server Server) Session(ctx context.Context) (data.Session, *derp.Error) {
 
 	return Session{
 		database: server.Database,
