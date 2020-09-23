@@ -132,7 +132,7 @@ func TestErrors(t *testing.T) {
 	person := &testPerson{}
 
 	{
-		err := session.Collection("MissingCollection").Load(nil, person)
+		err := session.Collection("MissingCollection").Load(nil, person).(*derp.SingleError)
 		assert.NotNil(t, err)
 		assert.Equal(t, derp.CodeNotFoundError, err.Code)
 		assert.Equal(t, "mockdb.Load", err.Location)
@@ -141,7 +141,7 @@ func TestErrors(t *testing.T) {
 	}
 
 	{
-		err := session.Collection("Person").Save(person, "ERROR: Testing error codes")
+		err := session.Collection("Person").Save(person, "ERROR: Testing error codes").(*derp.SingleError)
 		assert.NotNil(t, err)
 		assert.Equal(t, derp.CodeInternalError, err.Code)
 		assert.Equal(t, "mockdb.Save", err.Location)

@@ -18,7 +18,7 @@ type Server struct {
 
 // New returns a fully populated mongodb.Server.  It requires that you provide the URI for the mongodb
 // cluster, along with the name of the database to be used for all transactions.
-func New(uri string, database string) (Server, *derp.Error) {
+func New(uri string, database string) (Server, error) {
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 
@@ -39,7 +39,7 @@ func New(uri string, database string) (Server, *derp.Error) {
 }
 
 // Session returns a new client session that can be used to perform CRUD transactions on this datastore.
-func (server Server) Session(ctx context.Context) (data.Session, *derp.Error) {
+func (server Server) Session(ctx context.Context) (data.Session, error) {
 
 	return Session{
 		database: server.database,

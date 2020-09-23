@@ -7,7 +7,6 @@ import (
 	"github.com/benpate/data"
 	"github.com/benpate/data/compare"
 	"github.com/benpate/data/option"
-	"github.com/benpate/derp"
 )
 
 // Iterator represents a generic set of data that can be returned by a datasource.
@@ -54,7 +53,7 @@ func (iterator *Iterator) Next(output data.Object) bool {
 }
 
 // Close prevents any further records from being read from the iterator
-func (iterator *Iterator) Close() *derp.Error {
+func (iterator *Iterator) Close() error {
 	iterator.Counter = len(iterator.Data) + 1
 	return nil
 }

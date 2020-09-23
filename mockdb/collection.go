@@ -19,7 +19,7 @@ type Collection struct {
 }
 
 // List retrieves a group of records as an Iterator.
-func (collection Collection) List(criteria expression.Expression, options ...option.Option) (data.Iterator, *derp.Error) {
+func (collection Collection) List(criteria expression.Expression, options ...option.Option) (data.Iterator, error) {
 
 	result := []data.Object{}
 
@@ -44,7 +44,7 @@ func (collection Collection) List(criteria expression.Expression, options ...opt
 }
 
 // Load retrieves a single record from the mock collection.
-func (collection Collection) Load(criteria expression.Expression, target data.Object) *derp.Error {
+func (collection Collection) Load(criteria expression.Expression, target data.Object) error {
 
 	if collection.Server.hasCollection(collection.Name) == false {
 		return derp.New(404, "mockdb.Load", "Collection does not exist", collection)
@@ -63,7 +63,7 @@ func (collection Collection) Load(criteria expression.Expression, target data.Ob
 }
 
 // Save adds/inserts a new record into the mock database
-func (collection Collection) Save(object data.Object, comment string) *derp.Error {
+func (collection Collection) Save(object data.Object, comment string) error {
 
 	if strings.HasPrefix(comment, "ERROR") {
 		return derp.New(500, "mockdb.Save", "Synthetic Error", comment)
@@ -89,7 +89,7 @@ func (collection Collection) Save(object data.Object, comment string) *derp.Erro
 }
 
 // Delete PERMANENTLY removes a record from the mock database.
-func (collection Collection) Delete(object data.Object, comment string) *derp.Error {
+func (collection Collection) Delete(object data.Object, comment string) error {
 
 	if strings.HasPrefix(comment, "ERROR") {
 		return derp.New(500, "mockdb.Delete", "Synthetic Error", comment)

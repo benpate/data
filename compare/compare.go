@@ -5,7 +5,7 @@ import (
 )
 
 // WithOperator uses an operator to compare two values, and returns TRUE or FALSE
-func WithOperator(value1 interface{}, operator string, value2 interface{}) (bool, *derp.Error) {
+func WithOperator(value1 interface{}, operator string, value2 interface{}) (bool, error) {
 
 	result, err := Interface(value1, value2)
 

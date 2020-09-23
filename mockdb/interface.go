@@ -2,11 +2,9 @@ package mockdb
 
 import (
 	"reflect"
-
-	"github.com/benpate/derp"
 )
 
-func populateInterface(source interface{}, target interface{}) *derp.Error {
+func populateInterface(source interface{}, target interface{}) error {
 
 	sourceValue := reflect.ValueOf(source)
 

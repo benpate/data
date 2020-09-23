@@ -44,7 +44,7 @@ func (iterator Iterator) Next(output data.Object) bool {
 }
 
 // Close closes the wrapped Cursor
-func (iterator Iterator) Close() *derp.Error {
+func (iterator Iterator) Close() error {
 
 	if err := iterator.Cursor.Close(iterator.Context); err != nil {
 		return derp.New(derp.CodeInternalError, "mongodb.Iterator.Close", err.Error())

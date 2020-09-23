@@ -19,7 +19,7 @@ type Collection struct {
 }
 
 // List retrieves a group of objects from the database
-func (c Collection) List(criteria expression.Expression, options ...option.Option) (data.Iterator, *derp.Error) {
+func (c Collection) List(criteria expression.Expression, options ...option.Option) (data.Iterator, error) {
 
 	criteriaBSON := ExpressionToBSON(criteria)
 
@@ -37,7 +37,7 @@ func (c Collection) List(criteria expression.Expression, options ...option.Optio
 }
 
 // Load retrieves a single object from the database
-func (c Collection) Load(criteria expression.Expression, target data.Object) *derp.Error {
+func (c Collection) Load(criteria expression.Expression, target data.Object) error {
 
 	criteriaBSON := ExpressionToBSON(criteria)
 
@@ -58,7 +58,7 @@ func (c Collection) Load(criteria expression.Expression, target data.Object) *de
 }
 
 // Save inserts/updates a single object in the database.
-func (c Collection) Save(object data.Object, note string) *derp.Error {
+func (c Collection) Save(object data.Object, note string) error {
 
 	object.SetUpdated(note)
 
@@ -96,7 +96,7 @@ func (c Collection) Save(object data.Object, note string) *derp.Error {
 }
 
 // Delete removes a single object from the database, using a "virtual delete"
-func (c Collection) Delete(object data.Object, note string) *derp.Error {
+func (c Collection) Delete(object data.Object, note string) error {
 
 	if object.IsNew() {
 		return derp.New(derp.CodeBadRequestError, "mongo.Delete", "Cannot delete a new object", c.collection, object, note)
