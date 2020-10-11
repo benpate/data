@@ -33,6 +33,30 @@ func (andExpression AndExpression) And(name string, operator string, value inter
 	return andExpression.Add(New(name, operator, value))
 }
 
+func (andExpression AndExpression) AndEqual(name string, value interface{}) AndExpression {
+	return andExpression.And(name, OperatorEqual, value)
+}
+
+func (andExpression AndExpression) AndNotEqual(name string, value interface{}) AndExpression {
+	return andExpression.And(name, OperatorNotEqual, value)
+}
+
+func (andExpression AndExpression) AndLessThan(name string, value interface{}) AndExpression {
+	return andExpression.And(name, OperatorLessThan, value)
+}
+
+func (andExpression AndExpression) AndLessOrEqual(name string, value interface{}) AndExpression {
+	return andExpression.And(name, OperatorLessOrEqual, value)
+}
+
+func (andExpression AndExpression) AndGreaterThan(name string, value interface{}) AndExpression {
+	return andExpression.And(name, OperatorGreaterThan, value)
+}
+
+func (andExpression AndExpression) AndGreaterOrEqual(name string, value interface{}) AndExpression {
+	return andExpression.And(name, OperatorGreaterOrEqual, value)
+}
+
 // Match implements the Expression interface.  It loops through all sub-expressions and returns TRUE if all of them match
 func (andExpression AndExpression) Match(fn MatcherFunc) bool {
 
