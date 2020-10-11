@@ -28,6 +28,16 @@ func BeginsWith(value1 interface{}, value2 interface{}) bool {
 
 			return strings.HasPrefix(value1, value2)
 		}
+		return false
+	}
+
+	if value1, ok := value1.([]string); ok {
+		if len(value1) > 0 {
+			if value2, ok := value2.(string); ok {
+				return (value1[0] == value2)
+			}
+		}
+		return false
 	}
 
 	return false
@@ -39,8 +49,21 @@ func Contains(value1 interface{}, value2 interface{}) bool {
 	if value1, ok := value1.(string); ok {
 
 		if value2, ok := value2.(string); ok {
-
 			return strings.Contains(value1, value2)
+		}
+		return false
+	}
+
+	if value1, ok := value1.([]string); ok {
+
+		if value2, ok := value2.(string); ok {
+
+			for _, v := range value1 {
+				if v == value2 {
+					return true
+				}
+			}
+			return false
 		}
 	}
 
@@ -53,9 +76,18 @@ func EndsWith(value1 interface{}, value2 interface{}) bool {
 	if value1, ok := value1.(string); ok {
 
 		if value2, ok := value2.(string); ok {
-
 			return strings.HasSuffix(value1, value2)
 		}
+		return false
+	}
+
+	if value1, ok := value1.([]string); ok {
+		if len(value1) > 0 {
+			if value2, ok := value2.(string); ok {
+				return (value1[len(value1)-1] == value2)
+			}
+		}
+		return false
 	}
 
 	return false
