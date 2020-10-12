@@ -7,6 +7,18 @@ import (
 // WithOperator uses an operator to compare two values, and returns TRUE or FALSE
 func WithOperator(value1 interface{}, operator string, value2 interface{}) (bool, error) {
 
+	// These operations are performed outside of the "Interface" comparison
+	switch operator {
+	case OperatorBeginsWith:
+		return BeginsWith(value1, value2), nil
+
+	case OperatorContains:
+		return Contains(value1, value2), nil
+
+	case OperatorEndsWith:
+		return EndsWith(value1, value2), nil
+	}
+
 	result, err := Interface(value1, value2)
 
 	if err != nil {
@@ -32,15 +44,6 @@ func WithOperator(value1 interface{}, operator string, value2 interface{}) (bool
 
 	case OperatorNotEqual:
 		return (result != 0), nil
-
-	case OperatorBeginsWith:
-		return BeginsWith(value1, value2), nil
-
-	case OperatorContains:
-		return Contains(value1, value2), nil
-
-	case OperatorEndsWith:
-		return EndsWith(value1, value2), nil
 
 	default:
 		return false, derp.New(500, "compare.WithOperator", "Unrecognized Operator", value1, operator, value2)
