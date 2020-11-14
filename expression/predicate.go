@@ -66,6 +66,36 @@ func (predicate Predicate) And(field string, operator string, value interface{})
 	return AndExpression{predicate, New(field, operator, value)}
 }
 
+// AndEqual combines this predicate with another one (created from the arguments) into an AndExpression
+func (predicate Predicate) AndEqual(name string, value interface{}) AndExpression {
+	return predicate.And(name, OperatorEqual, value)
+}
+
+// AndNotEqual combines this predicate with another one (created from the arguments) into an AndExpression
+func (predicate Predicate) AndNotEqual(name string, value interface{}) AndExpression {
+	return predicate.And(name, OperatorNotEqual, value)
+}
+
+// AndLessThan combines this predicate with another one (created from the arguments) into an AndExpression
+func (predicate Predicate) AndLessThan(name string, value interface{}) AndExpression {
+	return predicate.And(name, OperatorLessThan, value)
+}
+
+// AndLessOrEqual combines this predicate with another one (created from the arguments) into an AndExpression
+func (predicate Predicate) AndLessOrEqual(name string, value interface{}) AndExpression {
+	return predicate.And(name, OperatorLessOrEqual, value)
+}
+
+// AndGreaterThan combines this predicate with another one (created from the arguments) into an AndExpression
+func (predicate Predicate) AndGreaterThan(name string, value interface{}) AndExpression {
+	return predicate.And(name, OperatorGreaterThan, value)
+}
+
+// AndGreaterOrEqual combines this predicate with another one (created from the arguments) into an AndExpression
+func (predicate Predicate) AndGreaterOrEqual(name string, value interface{}) AndExpression {
+	return predicate.And(name, OperatorGreaterOrEqual, value)
+}
+
 // Or combines this predicate with another one (created from the arguments) into an OrExpression
 func (predicate Predicate) Or(field string, operator string, value interface{}) OrExpression {
 	return OrExpression{predicate, New(field, operator, value)}
