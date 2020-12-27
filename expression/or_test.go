@@ -3,7 +3,6 @@ package expression
 import (
 	"testing"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -28,8 +27,6 @@ func TestOrExpression(t *testing.T) {
 			),
 		),
 	)
-
-	spew.Dump(exp)
 
 	assert.Equal(t, "field0", exp[0].(Predicate).Field)
 	assert.Equal(t, "field1", exp[1].(Predicate).Field)
