@@ -8,7 +8,7 @@
 
 ## Swappable Database Adapters for Go
 
-This library helps to make simple database calls as easily as possible, by providing a simple, common interface that we can implement for every database we need.  The goal of this package is to provide simple [CRUD operations](https://en.wikipedia.org/wiki/Create%2C_read%2C_update_and_delete) only, so each database will support many advanced features that are not available through this library.
+This library provides a common interface for making simple database calls.  The goal of this package is to provide simple [CRUD operations](https://en.wikipedia.org/wiki/Create%2C_read%2C_update_and_delete) only, so each database will support many advanced features that are not available through this library.  Other modules (such as [data-mongo](https://github.com/benpate/data-mongo) and [data-mock](https://github.com/benpate/data-mock)) implement specific database adapters.
 
 ### The "Object" interface
 
@@ -65,15 +65,6 @@ for it.Next(&person) {
 }
 ```
 
-### data.mock
-
-This adapter implements the data interface for an in-memory datastore.  It is the world's worst database, and should only be used for creating unit tests.  If you use this "database" in production (hell, or even as a proof-of-concept demo) then you deserve the merciless mockery that fate holds for you.
-
-### data.mongodb
-
-This adapter implements the data interface for MongoDB.  It uses the standard MongoDB driver.  It is currently a work-in-progress, and not ready for use by anyone, for any reason.  It is very likely to blow up your server, launch the nukes, and unleash the plague on you, your customers, and your family.
-
-
 ## Retrieving Record Sets
 
 This library also includes an "iterator" interface, for retrieving large sets of data from the datasource efficiently.
@@ -95,20 +86,19 @@ for it.Next(&person) {
 
 ### Expression Builder
 
-Every database has its own query language, so this library provides in intermediate format that should be easy to convert into whatever specific language you need to use.  Check out the README.md in the expression folder for more details and examples.
+Every database has its own query language, so this library uses the [exp module](https://github.com/benpate/exp) to represent query expressions in an efficient intermediate format that should be easy to convert into whatever specific language you need to use.
 
 ```go
 // build single predicate expressions
-c := expression.New("name", "=", "John Connor")
+c := exp.Equal("name", "John Connor")
 
 // or chain logical expressions together
-c := expression.New("name", "=", "John Connor").Or("name", "=", "Sarah Connor")
+c := exp.Equal("name", "John Connor").OrEqual("name", "Sarah Connor")
 ```
 
 ### Query Options
 
-There's a package for managing optional query arguments, such as sorting and pagination.  These options just encapsulate data.  It is the responsibilty of 
-each database adapter to implement each of these in its own query engine.
+There's a package for managing optional query arguments, such as sorting and pagination.  These options just encapsulate data.  It is the responsibilty of each database adapter to implement each of these in its own query engine.
 
 ```go
 
@@ -123,8 +113,6 @@ it := session.List(collection, criteria, options.SortAsc("name"), options.MaxRow
 **`FirstRow(count)`** tells the database to start returning records at the provided row number
 
 **`MaxRows(count)`** tells the database to limit the number of records to the designated number of rows.
-
-
 
 ## Pull Requests Welcome
 
