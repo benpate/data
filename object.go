@@ -1,5 +1,7 @@
 package data
 
+import "github.com/benpate/path"
+
 // Object interface defines all of the methods that a Domain Object must provide to Presto
 type Object interface {
 
@@ -17,4 +19,8 @@ type Object interface {
 
 	// SetDeleted marks the object virtually "deleted", and makes a note
 	SetDeleted(comment string)
+
+	// Object also wraps path.Getter and path.Setter as generic ways of accessing Object data.
+	path.Getter
+	path.Setter
 }
