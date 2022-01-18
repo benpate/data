@@ -1,10 +1,10 @@
 # Data 📚
 
-[![GoDoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](http://godoc.org/github.com/benpate/data)
-[![Build Status](http://img.shields.io/travis/benpate/data.svg?style=flat-square)](https://travis-ci.org/benpate/data)
+[![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](http://pkg.go.dev/github.com/benpate/data)
+[![Build Status](https://img.shields.io/github/workflow/status/benpate/data/Go/master)](https://github.com/benpate/data/actions/workflows/go.yml)
 [![Codecov](https://img.shields.io/codecov/c/github/benpate/data.svg?style=flat-square)](https://codecov.io/gh/benpate/data)
 [![Go Report Card](https://goreportcard.com/badge/github.com/benpate/data?style=flat-square)](https://goreportcard.com/report/github.com/benpate/data)
-![Version](https://img.shields.io/github/v/release/benpate/data?include_prereleases&style=flat-square&color=brightgreen)
+[![Version](https://img.shields.io/github/v/release/benpate/data?include_prereleases&style=flat-square&color=brightgreen)](https://github.com/benpate/data/releases)
 
 ## Swappable Database Adapters for Go
 
@@ -34,7 +34,6 @@ type Object interface {
     SetDeleted(comment string)
 }
 ```
-
 
 ### Datasource Interface
 
