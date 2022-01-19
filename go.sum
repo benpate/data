@@ -1,16 +1,6 @@
-github.com/benpate/compare v0.1.0 h1:ez9loY//1MHYhk+jVNcHRu1beiS1O6mME9re0TjmUbQ=
-github.com/benpate/compare v0.1.0/go.mod h1:Ii/Lnmvvw+CCvBLAKoKXHWUqQEttAozkiFKVKMzeh6Q=
-github.com/benpate/convert v0.11.1 h1:j1GQdQpwqdsXS5cI+uWeDYW/Zk1P1h7n8AQixZBYNnI=
-github.com/benpate/convert v0.11.1/go.mod h1:OOSsfYUChsbE+9hBIJQsxGyiogL//WTHEpgXiSLETRg=
-github.com/benpate/derp v0.22.2 h1:qPcnT32VG8gqhDR4y+dhK2n/0TMvZ3RUP+HbENNogAc=
-github.com/benpate/derp v0.22.2/go.mod h1:ENjMpkMmxn9gAulMAggElVcD2kNrsbjFhoZK8fUlCxY=
 github.com/benpate/exp v0.1.0 h1:Xfdh11vnl5vHF6SsYIK7JJvn/ewmYeiPNZcZWVYZBKc=
 github.com/benpate/exp v0.1.0/go.mod h1:HIA7i+4hg0vn85dwAawpXJw8adDBRE+bU7/1jgMav5o=
 github.com/benpate/list v0.4.2/go.mod h1:qT9JMhKPxIP97Gsr+mUfvuGwwDfKsfR/jfRuWj0ogLc=
-github.com/benpate/null v0.6.1 h1:MInsq7/M9E9IzF6EWeB1po5p9zQpvimw3brrU1UeRzA=
-github.com/benpate/null v0.6.1/go.mod h1:gxun/MktUPdKfYWvkzCI2fCy3OX/3+sZWh01hjYdXwE=
-github.com/benpate/path v0.5.1 h1:FRMpfuXURbRT5EkrgFs7mIsRdPXC8xzBsVsD2OCayEc=
-github.com/benpate/path v0.5.1/go.mod h1:uIiKDHeOa2YIIahSJ6eP/0vqx8cpThV5nuplQETSZ44=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
