@@ -17,14 +17,4 @@ type Object interface {
 
 	// SetDeleted marks the object virtually "deleted", and makes a note
 	SetDeleted(comment string)
-
-	// Get implements the path.Getter interface.
-	// It returns a value stored in the object.
-	// Dotted values reference sub-objects.
-	GetPath(string) (interface{}, bool)
-
-	// SetPath implements the path.Setter interface.
-	// It applies a value to the object's properties.
-	// Dotted values reference sub-objects.
-	SetPath(string, interface{}) error
 }
