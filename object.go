@@ -6,8 +6,17 @@ type Object interface {
 	// ID returns the primary key of the object
 	ID() string
 
+	// Unix epoch time when this object was created
+	Created() int64
+
+	// Unix epoch time when this object was updated
+	Updated() int64
+
 	// IsNew returns TRUE if the object has not yet been saved to the database
 	IsNew() bool
+
+	// IsDeleted returns TRUE if the object has been virtually deleted
+	IsDeleted() bool
 
 	// SetCreated stamps the CreateDate and UpdateDate of the object, and makes a note
 	SetCreated(comment string)
@@ -17,4 +26,7 @@ type Object interface {
 
 	// SetDeleted marks the object virtually "deleted", and makes a note
 	SetDeleted(comment string)
+
+	// ETag returns the signature or revision number of the object
+	ETag() string
 }

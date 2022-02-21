@@ -27,6 +27,16 @@ func (journal *Journal) IsDeleted() bool {
 	return (journal.DeleteDate > 0)
 }
 
+// Created returns the Unix epoch time when the object containing this journal was created
+func (journal *Journal) Created() int64 {
+	return journal.CreateDate
+}
+
+// Updated returns the Unix epoch time when the object containing this journal was updated
+func (journal *Journal) Updated() int64 {
+	return journal.UpdateDate
+}
+
 // SetCreated must be called whenever a new object is added to the database
 func (journal *Journal) SetCreated(note string) {
 
