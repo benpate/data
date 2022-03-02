@@ -10,11 +10,11 @@ import (
 // the box, so it's a useful example for implementing the data.Object interface,
 // or even to embed directly into an existing model object.
 type Journal struct {
-	CreateDate int64  `json:"createDate" bson:"createDate"`
-	UpdateDate int64  `json:"updateDate" bson:"updateDate"`
-	DeleteDate int64  `json:"deleteDate" bson:"deleteDate"`
-	Note       string `json:"note"       bson:"note"`
-	Revision   int64  `json:"signature"  bson:"signature"`
+	CreateDate int64  `path:"createDate" json:"createDate" bson:"createDate"`
+	UpdateDate int64  `path:"updateDate" json:"updateDate" bson:"updateDate"`
+	DeleteDate int64  `path:"deleteDate" json:"deleteDate" bson:"deleteDate"`
+	Note       string `path:"note"       json:"note"       bson:"note"`
+	Revision   int64  `path:"signature"  json:"signature"  bson:"signature"`
 }
 
 // IsNew returns TRUE if the object has not yet been saved to the database
