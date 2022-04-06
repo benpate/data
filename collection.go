@@ -12,5 +12,5 @@ type Collection interface {
 	Load(filter exp.Expression, target Object) error
 	Save(object Object, note string) error
 	Delete(object Object, note string) error
-	HardDelete(object Object) error
+	HardDelete(filter exp.Expression) error
 }
