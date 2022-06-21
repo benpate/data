@@ -1,6 +1,6 @@
-github.com/benpate/exp v0.1.4 h1:ISFY7Hpo9KC88zGKdL7LYHkXlRTn3ORa6wetgvHRwBs=
-github.com/benpate/exp v0.1.4/go.mod h1:3vFAHjXhddBbfPpTb2HGFslAdu8LQg3C0c2AUz9/5Jg=
+github.com/benpate/exp v0.2.0 h1:W9Dt2WvQdzrxBzxQXGdUA5xWZkG+WmdCSG6Y3Cozyo0=
+github.com/benpate/exp v0.2.0/go.mod h1:1JOqo8px/6hzeH9ozCL4CUk0PFP3VQsX1xK2AKsweKg=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
-github.com/stretchr/testify v1.7.1 h1:5TQK59W5E3v0r2duFAb7P95B6hEeOyEnHRa8MjYSMTY=
-gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c h1:dUUwHk2QECo/6vqA44rthZ8ie2QXMNeKRTHCNY2nXvo=
+github.com/stretchr/testify v1.7.4 h1:wZRexSlwd7ZXfKINDLsO4r7WBt3gTKONc6K/VesHvHM=
+gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
