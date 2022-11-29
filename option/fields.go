@@ -7,7 +7,7 @@ const TypeFields = "MAXROWS"
 type FieldsConfig []string
 
 // Fields returns a query option that will limit the query results to a certain number of rows
-func Fields(fields []string) Option {
+func Fields(fields ...string) Option {
 	return FieldsConfig(fields)
 }
 
