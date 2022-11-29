@@ -4,7 +4,7 @@ package option
 const TypeMaxRows = "MAXROWS"
 
 // MaxRowsConfig is a query option that limits the number of rows to be included in a dataset
-type MaxRowsConfig int
+type MaxRowsConfig int64
 
 // MaxRows returns a query option that will limit the query results to a certain number of rows
 func MaxRows(maxRows int64) Option {
@@ -17,6 +17,6 @@ func (maxRowsConfig MaxRowsConfig) OptionType() string {
 }
 
 // MaxRows returns the maximum number of rows to include in a dataset
-func (maxRowsConfig MaxRowsConfig) MaxRows() int {
-	return int(maxRowsConfig)
+func (maxRowsConfig MaxRowsConfig) MaxRows() int64 {
+	return int64(maxRowsConfig)
 }
