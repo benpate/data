@@ -9,7 +9,7 @@ import (
 // when this transaction is complete
 type Collection interface {
 	List(filter exp.Expression, options ...option.Option) (Iterator, error)
-	Query(target interface{}, filter exp.Expression, options ...option.Option) error
+	Query(target any, filter exp.Expression, options ...option.Option) error
 	Load(filter exp.Expression, target Object) error
 	Save(object Object, note string) error
 	Delete(object Object, note string) error
