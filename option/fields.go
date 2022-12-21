@@ -1,7 +1,7 @@
 package option
 
 // TypeFields is the token that designates the fields to be returned
-const TypeFields = "MAXROWS"
+const TypeFields = "FIELDS"
 
 // FieldsConfig is a query option that limits the number of rows to be included in a dataset
 type FieldsConfig []string
