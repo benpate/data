@@ -2,4 +2,4 @@ module github.com/benpate/data
 
 go 1.18
 
-require github.com/benpate/exp v0.6.1
+require github.com/benpate/exp v0.7.0
