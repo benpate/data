@@ -10,11 +10,11 @@ import (
 // the box, so it's a useful example for implementing the data.Object interface,
 // or even to embed directly into an existing model object.
 type Journal struct {
-	CreateDate int64  `path:"createDate" json:"createDate" bson:"createDate"`
-	UpdateDate int64  `path:"updateDate" json:"updateDate" bson:"updateDate"`
-	DeleteDate int64  `path:"deleteDate" json:"deleteDate" bson:"deleteDate"`
-	Note       string `path:"note"       json:"note"       bson:"note"`
-	Revision   int64  `path:"signature"  json:"signature"  bson:"signature"`
+	CreateDate int64  `path:"createDate" json:"createDate" bson:"createDate"` // CreateDate is the Unix epoch (milliseconds) that the attached object was created
+	UpdateDate int64  `path:"updateDate" json:"updateDate" bson:"updateDate"` // UpdateDate is the Unix epoch (milliseconds) that the attached object was last updated
+	DeleteDate int64  `path:"deleteDate" json:"deleteDate" bson:"deleteDate"` // DeleteDate is the Unix epoch (milliseconds) that the attached object was deleted
+	Note       string `path:"note"       json:"note"       bson:"note"`       // Note is a human-readable description of the change that was made
+	Revision   int64  `path:"signature"  json:"signature"  bson:"signature"`  // Signature is a unique identifier for this version of the object
 }
 
 // IsNew returns TRUE if the object has not yet been saved to the database
@@ -27,12 +27,12 @@ func (journal Journal) IsDeleted() bool {
 	return (journal.DeleteDate > 0)
 }
 
-// Created returns the Unix epoch time when the object containing this journal was created
+// Created returns the Unix epoch (in milliseconds) when the object containing this journal was created
 func (journal Journal) Created() int64 {
 	return journal.CreateDate
 }
 
-// Updated returns the Unix epoch time when the object containing this journal was updated
+// Updated returns the Unix epoch (in milliseconds) when the object containing this journal was updated
 func (journal Journal) Updated() int64 {
 	return journal.UpdateDate
 }
