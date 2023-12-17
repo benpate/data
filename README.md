@@ -42,45 +42,38 @@ type Object interface {
 // Configure your database
 ds := mongodb.New(uri, dbname)
 
-// Create a new session, one per server request.
-session := ds.Session()
+// Create a new session, one per server request
+session := db.Session()
 defer session.Close()
 
+// Get a reference to the table/collection you're working with
+collection := session.Collection("Person")
+
 // LOAD from a person object from the database
-err := session.Load("Person", criteria, &person)
+err := collection.Load(criteria, &person)
 
-// INSERT/UPDATE a person object in the database
-err := session.Save("Person", person)
+// INSERT/UPDATE a person object in the database - writing a "note" to the journal.
+err := collection.Save(person, note)
 
-// DELETE a person from the database
-err := session.Delete("Person", person)
+// DELETE a person from the database. This is a "soft" delete that marks values as deleted but leaves them in the database.
+err := collection.Delete(person, note)
 
+// HARD DELETE a person, actually removing the record from the database.
+err := collection.HardDelete(criteria)
 
-// LIST many records from the database, by using an iterator that will loop through all records that match the provided criteria.
-it, err := session.List("Person", criteria, options...)
+// QUERY many records from the database, by populating a slice of results
+err := collection.Query(criteria, options...)
+
+// ITERATE over many records, using a more memory-friendly iterator to loop through a very large dataset.
+it, err := collection.Query(criteria, options...)
 
 for it.Next(&person) {
     // do stuff with person.
 }
-```
 
-## Retrieving Record Sets
+// COUNT the number of records that match a particular criteria
+count, err := collection.Count(criteria)
 
-This library also includes an "iterator" interface, for retrieving large sets of data from the datasource efficiently.
-
-```go
-
-// Create an object for the iterator to populate
-person := Person{}
-
-// Create the iterator.  Requires a collection name, criteria expression (below), and options (also below, such as sorting and pagination)
-it := session.List(CollectionName, CriteriaExpression, Options)
-
-for it.Next(&person) {
-
-    // person.Name...
-    // person.Email...
-}
 ```
 
 ### Expression Builder
