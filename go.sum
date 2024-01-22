@@ -1,5 +1,5 @@
-github.com/benpate/exp v0.8.1 h1:+ToKyxC5tcoGpPhb4JDKAFPO9rQKzg3gP6+H9o6RiR0=
-github.com/benpate/exp v0.8.1/go.mod h1:VWDkZ1uM4HyXJVi+NDA1QvVklsgFE7T9L5lCeZBento=
+github.com/benpate/exp v0.8.3 h1:rxlXtdLxc+XU5ySoAFEt7YKOjhOE7YRMz15YUePBLJk=
+github.com/benpate/exp v0.8.3/go.mod h1:VWDkZ1uM4HyXJVi+NDA1QvVklsgFE7T9L5lCeZBento=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcUk=
