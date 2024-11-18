@@ -1,9 +1,10 @@
 package data
 
-// Object interface defines all of the methods that a Domain Object must provide to Presto
+// Object interface defines all of the methods required for the `data`
+// library to create, read, update, and delete objects in the database.
 type Object interface {
 
-	// ID returns the primary key of the object
+	// The unique identifier for this object
 	ID() string
 
 	// Unix epoch time when this object was created
