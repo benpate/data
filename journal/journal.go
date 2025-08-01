@@ -18,22 +18,22 @@ type Journal struct {
 }
 
 // IsNew returns TRUE if the object has not yet been saved to the database
-func (journal *Journal) IsNew() bool {
+func (journal Journal) IsNew() bool {
 	return (journal.CreateDate == 0)
 }
 
 // IsDeleted returns TRUE if the object has been "virtually deleted" from the database
-func (journal *Journal) IsDeleted() bool {
+func (journal Journal) IsDeleted() bool {
 	return (journal.DeleteDate > 0)
 }
 
 // Created returns the Unix epoch time when the object containing this journal was created
-func (journal *Journal) Created() int64 {
+func (journal Journal) Created() int64 {
 	return journal.CreateDate
 }
 
 // Updated returns the Unix epoch time when the object containing this journal was updated
-func (journal *Journal) Updated() int64 {
+func (journal Journal) Updated() int64 {
 	return journal.UpdateDate
 }
 
@@ -75,6 +75,6 @@ func (journal *Journal) SetDeleted(note string) {
 
 // ETag returns the signature for this object.  It currently returns the "revision number"
 // which should be fine unless we make out-of-band updates to objects.
-func (journal *Journal) ETag() string {
+func (journal Journal) ETag() string {
 	return strconv.FormatInt(journal.Revision, 10)
 }
