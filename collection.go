@@ -8,10 +8,11 @@ import (
 // Collection represents a single database collection (or table) that is opened to support a single transactional request, and then closed
 // when this transaction is complete
 type Collection interface {
-	List(filter exp.Expression, options ...option.Option) (Iterator, error)
-	Query(target interface{}, filter exp.Expression, options ...option.Option) error
-	Load(filter exp.Expression, target Object) error
+	Count(criteria exp.Expression, options ...option.Option) (int64, error)
+	Query(target any, criteria exp.Expression, options ...option.Option) error
+	Iterator(criteria exp.Expression, options ...option.Option) (Iterator, error)
+	Load(criteria exp.Expression, target Object) error
 	Save(object Object, note string) error
 	Delete(object Object, note string) error
-	HardDelete(filter exp.Expression) error
+	HardDelete(criteria exp.Expression) error
 }
