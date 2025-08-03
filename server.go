@@ -10,4 +10,5 @@ import (
 // Server is an abstract representation of a database and its connection information.
 type Server interface {
 	Session(context.Context) (Session, error)
+	WithTransaction(context.Context, TransactionCallbackFunc) (any, error)
 }
