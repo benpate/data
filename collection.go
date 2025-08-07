@@ -1,6 +1,8 @@
 package data
 
 import (
+	"context"
+
 	"github.com/benpate/data/option"
 	"github.com/benpate/exp"
 )
@@ -8,6 +10,7 @@ import (
 // Collection represents a single database collection (or table) that is opened to support a single transactional request, and then closed
 // when this transaction is complete
 type Collection interface {
+	Context() context.Context
 	Count(criteria exp.Expression, options ...option.Option) (int64, error)
 	Query(target any, criteria exp.Expression, options ...option.Option) error
 	Iterator(criteria exp.Expression, options ...option.Option) (Iterator, error)
