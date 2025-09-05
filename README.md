@@ -8,7 +8,7 @@
 
 ## Swappable Database Adapters for Go
 
-This library provides a common interface for making simple database calls.  The goal of this package is to provide simple [CRUD operations](https://en.wikipedia.org/wiki/Create%2C_read%2C_update_and_delete) only, so each database will support many advanced features that are not available through this library.  Other modules (such as [data-mongo](https://github.com/benpate/data-mongo) and [data-mock](https://github.com/benpate/data-mock)) implement specific database adapters.
+This library provides a common interface for making simple database calls.  The goal of this package is to provide simple [CRUD operations](https://en.wikipedia.org/wiki/Create%2C_read%2C_update_and_delete) only, so each database will support many advanced features that are not available through this library.  Other modules (such as [data-mongo](https://github.com/benpate/data-mongo) and [data-mock](https://github.com/benpate/data-mock)) implement specific adapters.
 
 ### The "Object" interface
 
