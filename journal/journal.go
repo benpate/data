@@ -1,3 +1,6 @@
+// Package journal provides a simple implementation of a change-tracking
+// "journal" that can be embedded into other data objects to track their
+// creation, update, and deletion history.
 package journal
 
 import (
