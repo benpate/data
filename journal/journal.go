@@ -17,7 +17,7 @@ type Journal struct {
 	UpdateDate int64  `path:"updateDate" json:"updateDate" bson:"updateDate"` // UpdateDate is the Unix epoch (milliseconds) that the attached object was last updated
 	DeleteDate int64  `path:"deleteDate" json:"deleteDate" bson:"deleteDate"` // DeleteDate is the Unix epoch (milliseconds) that the attached object was deleted
 	Note       string `path:"note"       json:"note"       bson:"note"`       // Note is a human-readable description of the change that was made
-	Revision   int64  `path:"signature"  json:"signature"  bson:"signature"`  // Signature is a unique identifier for this version of the object
+	Revision   int64  `path:"signature"  json:"signature"  bson:"signature"`  // Revision is incremented on every change and serves as the object's ETag/signature (serialized as "signature" for backward compatibility)
 }
 
 // IsNew returns TRUE if the object has not yet been saved to the database

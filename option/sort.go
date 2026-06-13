@@ -11,8 +11,8 @@ const SortDirectionDescending = "DESC"
 
 // SortOption identifies the field and direction to use when sorting a dataset
 type SortOption struct {
-	FieldName string
-	Direction string
+	FieldName string // FieldName is the name of the field to sort on
+	Direction string // Direction is the sort order, either SortDirectionAscending or SortDirectionDescending
 }
 
 // OptionType identifies this object as a query option

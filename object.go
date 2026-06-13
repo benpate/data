@@ -7,10 +7,10 @@ type Object interface {
 	// The unique identifier for this object
 	ID() string
 
-	// Unix epoch time when this object was created
+	// Unix epoch (in milliseconds) when this object was created
 	Created() int64
 
-	// Unix epoch time when this object was updated
+	// Unix epoch (in milliseconds) when this object was updated
 	Updated() int64
 
 	// IsNew returns TRUE if the object has not yet been saved to the database
