@@ -1,6 +1,6 @@
-// Package data provides a data structure for defining simple database filters.  This
-// is not able to represent every imaginable query criteria, but it does a good job of making
-// common criteria simple to format and pass around in your application.
+// Package data defines a minimal set of interfaces for abstracting database access
+// (servers, sessions, collections, and the objects they store) so that application
+// code can perform CRUD operations without depending on a specific database driver.
 package data
 
 import (
