@@ -76,8 +76,8 @@ func (journal *Journal) SetDeleted(note string) {
 	}
 }
 
-// ETag returns the signature for this object.  It currently returns the "revision number"
-// which should be fine unless we make out-of-band updates to objects.
+// ETag returns the signature for this object.
 func (journal Journal) ETag() string {
+	// The revision number is sufficient as an ETag unless objects are updated out-of-band.
 	return strconv.FormatInt(journal.Revision, 10)
 }

@@ -1,12 +1,12 @@
 package option
 
-// TypeFirstRow is the token that designates the "row number" to begin results.
+// TypeFirstRow is the token that designates the "first row only" query option.
 const TypeFirstRow = "FIRSTROW"
 
-// FirstRowOption is a query option that sets the first row to be returned in a dataset
+// FirstRowOption is a query option that returns only the first matching row of a dataset.
 type FirstRowOption struct{}
 
-// FirstRow returns a query option that will limit the query results to a certain number of rows
+// FirstRow returns a query option that limits the results to only the first matching row.
 func FirstRow() Option {
 	return FirstRowOption{}
 }

@@ -4,13 +4,13 @@ package data
 // library to create, read, update, and delete objects in the database.
 type Object interface {
 
-	// The unique identifier for this object
+	// ID returns the unique identifier for this object
 	ID() string
 
-	// Unix epoch (in milliseconds) when this object was created
+	// Created returns the Unix epoch (in milliseconds) when this object was created
 	Created() int64
 
-	// Unix epoch (in milliseconds) when this object was updated
+	// Updated returns the Unix epoch (in milliseconds) when this object was updated
 	Updated() int64
 
 	// IsNew returns TRUE if the object has not yet been saved to the database

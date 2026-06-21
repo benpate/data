@@ -23,14 +23,21 @@ func (person *Person) ID() string {
 // journal.Journal defines all of the other data points and methods required 
 // to meet the data.Object interface
 
+// Created() int64
+// Updated() int64
 // IsNew() bool
+// IsDeleted() bool
 // SetCreated(string)
 // SetUpdated(string)
 // SetDeleted(string)
+// ETag() string
 
 ```
 
+## What matters here
 
+- **`SetUpdated` and `SetDeleted` increment `Revision`; `SetCreated` does not.** `Revision` backs `ETag()`, so a freshly created object has an ETag of `"0"`. Adapters rely on this for optimistic concurrency — keep the increment in the mutators.
+- **The `Revision` field serializes as `"signature"`** in its `json`/`bson`/`path` tags, for backward compatibility with stored data. Renaming the tag would orphan existing records.
 
 ## Pull Requests Welcome
 
