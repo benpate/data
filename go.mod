@@ -2,7 +2,7 @@ module github.com/benpate/data
 
 go 1.25
 
-require github.com/benpate/exp v0.9.0
+require github.com/benpate/exp v0.10.0
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect

@@ -1,5 +1,5 @@
-github.com/benpate/exp v0.9.0 h1:rlYLchy1u4ChQ9oYFi4zOQAKb+yRsrvMivcrcF18irI=
-github.com/benpate/exp v0.9.0/go.mod h1:OPDLAVhPZvz/G43bX3JFAEP02OTIRvZNwNRduV44RoU=
+github.com/benpate/exp v0.10.0 h1:Ka830JAbgylqvZtC0k3Iz4yyFsO7p53Pt2qVeyFBDgk=
+github.com/benpate/exp v0.10.0/go.mod h1:OPDLAVhPZvz/G43bX3JFAEP02OTIRvZNwNRduV44RoU=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
