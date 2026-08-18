@@ -16,8 +16,22 @@ type SortOption struct {
 }
 
 // OptionType identifies this object as a query option
-func (sortConfig SortOption) OptionType() string {
+func (option SortOption) OptionType() string {
 	return TypeSort
+}
+
+// IsDescending returns TRUE if this option sorts from highest to lowest.
+// Any direction other than SortDirectionDescending sorts ASCENDING.
+func (option SortOption) IsDescending() bool {
+	// Adapters must branch on this, not on the raw Direction field. Direction is
+	// exported and unvalidated, so it can hold a typo or the empty string (from a
+	// zero-value SortOption); ascending is the safe default for anything unrecognized.
+	return option.Direction == SortDirectionDescending
+}
+
+// IsAscending returns TRUE if this option sorts from lowest to highest
+func (option SortOption) IsAscending() bool {
+	return !option.IsDescending()
 }
 
 // SortAsc returns a query option that will sort the query results in ASCENDING order

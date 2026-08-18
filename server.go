@@ -11,8 +11,8 @@ import (
 type Server interface {
 
 	// Session opens a new Session against the database, scoped to the provided context
-	Session(context.Context) (Session, error)
+	Session(ctx context.Context) (Session, error)
 
 	// WithTransaction opens a session, runs the callback, and commits or rolls back based on its result
-	WithTransaction(context.Context, TransactionCallbackFunc) (any, error)
+	WithTransaction(ctx context.Context, callback TransactionCallbackFunc) (any, error)
 }

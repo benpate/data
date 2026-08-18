@@ -4,7 +4,7 @@ package data
 type Iterator interface {
 
 	// Next populates the provided target with the next item, returning FALSE when the iterator is exhausted
-	Next(any) bool
+	Next(target any) bool
 
 	// Error returns the first error (if any) encountered while iterating
 	Error() error

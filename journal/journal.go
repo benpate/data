@@ -43,10 +43,13 @@ func (journal Journal) Updated() int64 {
 // SetCreated must be called whenever a new object is added to the database
 func (journal *Journal) SetCreated(note string) {
 
+	// Stamp both dates with a single timestamp so they compare as equal.
+	// Creation deliberately does NOT bump Revision, so a new object's ETag is "0".
 	timestamp := time.Now().UnixMilli()
 	journal.CreateDate = timestamp
 	journal.UpdateDate = timestamp
 
+	// RULE: An empty note leaves the previous note intact, and never blanks it out
 	if note != "" {
 		journal.Note = note
 	}
@@ -55,9 +58,12 @@ func (journal *Journal) SetCreated(note string) {
 // SetUpdated must be called whenever an existing object is updated in the database
 func (journal *Journal) SetUpdated(note string) {
 
+	// Revision backs ETag(), so every update must bump it, even when the
+	// UpdateDate lands in the same millisecond as the previous write.
 	journal.UpdateDate = time.Now().UnixMilli()
 	journal.Revision = journal.Revision + 1
 
+	// RULE: An empty note leaves the previous note intact, and never blanks it out
 	if note != "" {
 		journal.Note = note
 	}
@@ -66,11 +72,14 @@ func (journal *Journal) SetUpdated(note string) {
 // SetDeleted must be called to "virtual-delete" an object in the database
 func (journal *Journal) SetDeleted(note string) {
 
+	// A virtual delete is still an update, so it stamps UpdateDate and bumps
+	// Revision alongside DeleteDate. The record itself stays in the database.
 	timestamp := time.Now().UnixMilli()
 	journal.UpdateDate = timestamp
 	journal.DeleteDate = timestamp
 	journal.Revision = journal.Revision + 1
 
+	// RULE: An empty note leaves the previous note intact, and never blanks it out
 	if note != "" {
 		journal.Note = note
 	}

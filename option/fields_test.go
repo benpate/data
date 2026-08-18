@@ -39,3 +39,31 @@ func TestFields_Values(t *testing.T) {
 	test("one", "two")
 	test("a", "b", "c", "d", "e")
 }
+
+// A spread argument must not alias the option: writes to the caller's slice
+// after construction must not be visible through the option.
+func TestFields_DoesNotAliasCallerSlice(t *testing.T) {
+
+	names := []string{"name", "email"}
+	typed := Fields(names...).(FieldsOption)
+
+	names[0] = "mutated"
+
+	assert.Equal(t, []string{"name", "email"}, typed.Fields())
+}
+
+// The accessor must hand back a copy, so an adapter cannot corrupt the option
+// it was given by writing through the returned slice.
+func TestFields_AccessorReturnsCopy(t *testing.T) {
+
+	typed := Fields("name", "email").(FieldsOption)
+
+	// Ranging (rather than indexing) keeps this safe for a nil slice, which is
+	// what Fields() returns when the option carries no field names.
+	out := typed.Fields()
+	for index := range out {
+		out[index] = "mutated"
+	}
+
+	assert.Equal(t, []string{"name", "email"}, typed.Fields())
+}

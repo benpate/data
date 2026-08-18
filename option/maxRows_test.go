@@ -31,7 +31,28 @@ func TestMaxRows_Values(t *testing.T) {
 
 	test(0)
 	test(1)
-	test(-1)
 	test(math.MaxInt64)
+}
+
+// Negative row limits are meaningless, so they are clamped to zero ("no limit")
+// rather than passed through to an adapter that would misread them.
+func TestMaxRows_NegativeIsClamped(t *testing.T) {
+
+	test := func(value int64) {
+		typed := MaxRows(value).(MaxRowsOption)
+		assert.Equal(t, int64(0), typed.MaxRows())
+	}
+
+	test(-1)
+	test(-100)
 	test(math.MinInt64)
+}
+
+// The clamp must also hold for a value built by direct conversion, which
+// bypasses the MaxRows constructor entirely.
+func TestMaxRows_DirectConversionIsClamped(t *testing.T) {
+
+	assert.Equal(t, int64(0), MaxRowsOption(-1).MaxRows())
+	assert.Equal(t, int64(0), MaxRowsOption(math.MinInt64).MaxRows())
+	assert.Equal(t, int64(7), MaxRowsOption(7).MaxRows())
 }
