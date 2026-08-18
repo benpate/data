@@ -1,0 +1,32 @@
+version: "2"
+
+# Mirrors the local go-vet gate pipeline, so CI and a developer's machine
+# fail on the same findings.
+linters:
+  enable:
+    - errcheck      # gate 7: dropped errors
+    - govet         # gate 3
+    - ineffassign
+    - revive        # gate 6: lint & scope
+    - staticcheck   # gate 4
+    - unused
+    - bodyclose
+    - copyloopvar
+    - errorlint
+    - gosec         # gate 10: security lint
+    - nilerr
+    - unconvert
+
+  exclusions:
+    generated: lax
+    rules:
+      # Test files may assert on values that production code must check
+      - path: _test\.go
+        linters:
+          - errcheck
+          - gosec
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
